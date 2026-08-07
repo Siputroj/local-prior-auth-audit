@@ -1,0 +1,42 @@
+# Implementation plan (internal working doc)
+implementation_plan.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+eggs/
+*.egg
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Synthea backup data
+synthea_data_backup/
+
+# Streamlit
+.streamlit/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
