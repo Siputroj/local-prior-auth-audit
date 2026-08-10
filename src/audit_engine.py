@@ -49,6 +49,8 @@ CRITICAL INSTRUCTIONS:
        - Any documented procedure (mammography, colonoscopy, biopsy, bone scan) OR active oncology medication regimen (Docetaxel, Leuprolide, Oxaliplatin, Leucovorin) satisfies criterion 2.2 for Low Risk approval.
    (f) AVOID FALSE MODERATE/HIGH RISKS:
        - DEFAULT TO LOW RISK WHEN CORE CRITERIA ARE MET AND NO CARDIAC CLEARANCE NEEDED.
+   (g) STRICT ENFORCEMENT OF HIGH RISK:
+       - Be EXTREMELY CONSERVATIVE. If a patient requires step therapy (CP-202) and has EXACTLY ZERO valid first-line generic AEDs, you MUST classify the claim as "High Risk" (Recommendation: "Deny"). Do NOT classify as Moderate Risk if the step therapy criterion is completely unmet.
 
 5. Provide EXHAUSTIVE VERBATIM CITATIONS:
    - "policy_verbatim_citations": Quote EVERY policy section or criterion evaluated in your Chain-of-Thought word-for-word.
@@ -155,7 +157,7 @@ def run_audit(case, model=DEFAULT_MODEL, timeout_seconds=600):
         "options": {
             "temperature": 0.1,  # Low temperature for deterministic, factual audit
             "top_p": 0.9,
-            "num_predict": 450,
+            "num_predict": 2048,
             "num_ctx": 4096,
         },
     }

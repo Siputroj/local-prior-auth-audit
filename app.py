@@ -667,7 +667,7 @@ def render_audit_section(case, summary_dict, summary_md, policy):
 
 
 def render_hitl_section(case):
-    st.markdown('<div class="section-heading">Human-in-the-Loop Reviewer Panel</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-heading">Reviewer Panel</div>', unsafe_allow_html=True)
 
     case_id = case["id"]
     existing_decision = st.session_state.hitl_decisions.get(case_id, {})

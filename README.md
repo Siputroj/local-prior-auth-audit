@@ -98,6 +98,11 @@ Once running, open `http://localhost:8501` in your browser.
 | `CASE-DEMO-202` | CP-202 Neurology | Lewis D'Amore | **High Risk** (Deny) |
 | `CASE-DEMO-303` | CP-303 Orthopedics | Lorita Kautzer | **Moderate Risk** (Manual Review) |
 
+**Demo Case Explanations:**
+- **CASE-DEMO-101 (Low Risk)**: This case is classified as **Low Risk** because the patient has a confirmed, active diagnosis of Malignant neoplasm of breast (SNOMED: 254837009) and a documented history of mammography procedures, fully satisfying the mandatory clinical criteria of CP-101 without any contraindications.
+- **CASE-DEMO-202 (High Risk)**: This case is classified as **High Risk** because although the patient has an active seizure disorder diagnosis, they have exactly 0 valid first-line generic AEDs (antiepileptic drugs) in their medication history. This is a complete failure of the CP-202 step-therapy requirement, triggering an automatic denial recommendation.
+- **CASE-DEMO-303 (Moderate Risk)**: This case is classified as **Moderate Risk** because while the patient meets the criteria for total knee replacement (Osteoarthritis of knee), they also have a history of Congestive heart failure (SNOMED: 88805009). This presents a significant surgical risk and requires explicit cardiology clearance, mandating a human-in-the-loop manual review.
+
 ---
 
 ### Option B: Scaled Benchmark (100 Cases)
