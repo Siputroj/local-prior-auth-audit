@@ -351,44 +351,32 @@ def render_cot_steps(cot_steps):
         return
 
     paired_steps = []
-    i = 0
-    while i < len(cot_steps):
-        step_text = str(cot_steps[i]).strip()
+    for i, step_text in enumerate(cot_steps):
+        step_text = str(step_text).strip()
         if not step_text:
-            i += 1
             continue
+            
+        title = f"Step {i + 1}: Clinical Evaluation"
+        body = step_text
 
-        is_header = False
-        if step_text.lower().startswith("step ") and ("..." in step_text or len(step_text.split()) <= 10):
-            is_header = True
+        # Try to parse 'Step 1 - Description: body'
+        if step_text.lower().startswith("step "):
+            if ":" in step_text:
+                parts = step_text.split(":", 1)
+                # Ensure title uses a colon consistently as requested
+                raw_title = parts[0].strip()
+                title = raw_title.replace(" - ", ": ", 1)
+                body = parts[1].strip()
+            elif " - " in step_text:
+                parts = step_text.split(" - ", 1)
+                raw_title = parts[0].strip()
+                title = f"{raw_title}: Clinical Evaluation"
+                body = parts[1].strip()
 
-        if is_header:
-            title = step_text.rstrip(".")
-            if i + 1 < len(cot_steps):
-                next_text = str(cot_steps[i + 1]).strip()
-                if not next_text.lower().startswith("step "):
-                    paired_steps.append((title, next_text))
-                    i += 2
-                    continue
-            paired_steps.append((title, "Completed evaluation step: No clinical red flags or contraindications identified on record."))
-            i += 1
-            continue
-
-        if ":" in step_text and step_text.lower().startswith("step "):
-            parts = step_text.split(":", 1)
-            title = parts[0].strip()
-            body = parts[1].strip() or "Completed evaluation step with verified compliance."
-            paired_steps.append((title, body))
-        elif " - " in step_text and step_text.lower().startswith("step "):
-            parts = step_text.split(" - ", 1)
-            title = parts[0].strip()
-            body = parts[1].strip() or "Completed evaluation step with verified compliance."
-            paired_steps.append((title, body))
-        else:
-            title = f"Step {len(paired_steps) + 1} - Clinical Evaluation"
-            body = step_text
-            paired_steps.append((title, body))
-        i += 1
+        if not body:
+             body = "Completed evaluation step: No clinical red flags or contraindications identified on record."
+             
+        paired_steps.append((title, body))
 
     for title, body in paired_steps:
         st.markdown(
