@@ -1,8 +1,11 @@
 """
-Quantitative F1-Score and AI Quality Evaluation Module.
+Quantitative F1-Score and AI Quality Evaluation Module (Streamlit demo).
 
-Evaluates local LLM prior authorization audit outputs against Gemini gold-standard
-ground-truth benchmarks (src/ground_truth_cases.json).
+Evaluates a local LLM prior-authorization audit output for one of the three
+demo cases against the gold-standard labels in src/ground_truth_cases.json
+(Claude-Opus-authored). Used ONLY by the UI single-case scorecard.
+
+The scaled 100-case benchmark under benchmark/ uses its own metrics module.
 
 Metrics Computed:
 - Risk Tier Classification Accuracy (Exact match)
@@ -129,13 +132,35 @@ def _extract_keywords(text):
     return keywords if keywords else [text.lower()]
 
 
+def _to_str(val) -> str:
+    """Safely convert any JSON element (string, dict, list, int) to a cleaned string."""
+    if val is None:
+        return ""
+    if isinstance(val, str):
+        return val.strip()
+    if isinstance(val, dict):
+        text_val = (
+            val.get("quote")
+            or val.get("text")
+            or val.get("citation")
+            or val.get("verbatim")
+            or val.get("evidence")
+        )
+        if text_val:
+            return str(text_val).strip()
+        return " ".join(str(v).strip() for v in val.values() if v).strip()
+    if isinstance(val, (list, tuple)):
+        return " ".join(_to_str(item) for item in val if item).strip()
+    return str(val).strip()
+
+
 def _evaluate_verbatim_fidelity(parsed_json, patient_summary_md, policy_text):
     """
     Check if verbatim citations in LLM output actually exist in source text.
     Returns grounding_fidelity (0.0 to 1.0) and list of detailed check results.
     """
-    policy_quotes = parsed_json.get("policy_verbatim_citations", [])
-    patient_quotes = parsed_json.get("patient_record_verbatim_citations", [])
+    policy_quotes = parsed_json.get("policy_verbatim_citations", []) or []
+    patient_quotes = parsed_json.get("patient_record_verbatim_citations", []) or []
 
     checks = []
     total_quotes = len(policy_quotes) + len(patient_quotes)
@@ -146,7 +171,7 @@ def _evaluate_verbatim_fidelity(parsed_json, patient_summary_md, policy_text):
 
     # Check policy citations
     for quote in policy_quotes:
-        clean_quote = quote.strip()
+        clean_quote = _to_str(quote)
         if not clean_quote:
             continue
         # Substring match or partial high-confidence match
@@ -161,7 +186,7 @@ def _evaluate_verbatim_fidelity(parsed_json, patient_summary_md, policy_text):
 
     # Check patient summary citations
     for quote in patient_quotes:
-        clean_quote = quote.strip()
+        clean_quote = _to_str(quote)
         if not clean_quote:
             continue
         match = _sub_quote_match(clean_quote, patient_summary_md)
@@ -182,7 +207,11 @@ def _sub_quote_match(quote, source_text):
     if not source_text or not quote:
         return False
 
-    q_lower = quote.lower()
+    q_str = _to_str(quote)
+    if not q_str:
+        return False
+
+    q_lower = q_str.lower()
     s_lower = source_text.lower()
 
     if q_lower in s_lower:
@@ -233,5 +262,5 @@ if __name__ == "__main__":
     sample_patient_md = "Malignant neoplasm of breast (disorder) (SNOMED: 254837009) [onset: 2003-09-14]"
     sample_policy_text = "The patient MUST have a confirmed active malignant neoplasm diagnosis documented in their medical record."
 
-    res = evaluate_audit_result("CASE-001", sample_audit, sample_patient_md, sample_policy_text)
+    res = evaluate_audit_result("CASE-DEMO-101", sample_audit, sample_patient_md, sample_policy_text)
     print(json.dumps(res, indent=2))

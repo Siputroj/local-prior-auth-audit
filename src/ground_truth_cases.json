@@ -1,6 +1,6 @@
 {
-  "CASE-001": {
-    "case_id": "CASE-001",
+  "CASE-DEMO-101": {
+    "case_id": "CASE-DEMO-101",
     "patient_name": "Claretha Kuhlman",
     "policy_id": "CP-101",
     "expected_risk_tier": "Low Risk",
@@ -23,7 +23,7 @@
       "CP-101-C2": {
         "description": "Pathologic/radiologic evidence of malignancy (non-exhaustive list)",
         "satisfied": true,
-        "evidence": "Extensive annual Mammography (SNOMED: 71651007) history through 2021-06-10 plus Bone density scan (SNOMED: 312681000) on 2015-07-01"
+        "evidence": "Extensive annual Mammography (SNOMED: 71651007) history plus Bone density scan (SNOMED: 312681000)"
       },
       "CP-101-C3": {
         "description": "Age 18 or older",
@@ -38,173 +38,8 @@
     ],
     "notes": "Cardiac Arrest history (SNOMED: 410429000) is on record, but the requested item is diagnostic imaging (Mammography), not chemotherapy - no procedural contraindication."
   },
-  "CASE-002": {
-    "case_id": "CASE-002",
-    "patient_name": "Anisa West",
-    "policy_id": "CP-101",
-    "expected_risk_tier": "Low Risk",
-    "expected_recommendation": "Approve",
-    "expected_confidence": 95,
-    "ground_truth_conditions": [
-      "Overlapping malignant neoplasm of colon (SNOMED: 109838007)",
-      "Polyp of colon (SNOMED: 68496003)"
-    ],
-    "ground_truth_medications": [
-      "Leucovorin 100 MG Injection (RxNorm: 1803932)",
-      "10 ML oxaliplatin 5 MG/ML Injection (RxNorm: 1736776)"
-    ],
-    "ground_truth_procedures": [
-      "Colonoscopy (SNOMED: 73761001)",
-      "Biopsy of colon (SNOMED: 76164006)",
-      "Partial resection of colon (SNOMED: 43075005)",
-      "Combined chemotherapy and radiation therapy (SNOMED: 703423002)"
-    ],
-    "criteria_evaluation": {
-      "CP-101-C1": {
-        "description": "Confirmed active malignant neoplasm",
-        "satisfied": true,
-        "evidence": "Overlapping malignant neoplasm of colon (SNOMED: 109838007) [onset 2020-02-22]"
-      },
-      "CP-101-C2": {
-        "description": "Pathologic/radiologic evidence of malignancy (non-exhaustive list)",
-        "satisfied": true,
-        "evidence": "Colonoscopy (SNOMED: 73761001) + Biopsy of colon (SNOMED: 76164006) + Partial resection of colon (SNOMED: 43075005) on 2020-02, plus active Leucovorin + Oxaliplatin regimen (continuation-of-therapy evidence)"
-      },
-      "CP-101-C3": {
-        "description": "Age 18 or older",
-        "satisfied": true,
-        "evidence": "Age: 67 years old"
-      }
-    },
-    "expected_citations": [
-      "Overlapping malignant neoplasm of colon (SNOMED: 109838007)",
-      "Colonoscopy (SNOMED: 73761001)",
-      "Biopsy of colon (SNOMED: 76164006)",
-      "Partial resection of colon (SNOMED: 43075005)"
-    ],
-    "notes": "Textbook oncology continuation case: diagnosis + workup + surgical resection + active chemo regimen all documented."
-  },
-  "CASE-003": {
-    "case_id": "CASE-003",
-    "patient_name": "Joshua Powlowski",
-    "policy_id": "CP-101",
-    "expected_risk_tier": "Low Risk",
-    "expected_recommendation": "Approve",
-    "expected_confidence": 90,
-    "ground_truth_conditions": [
-      "Neoplasm of prostate (SNOMED: 126906006)",
-      "Carcinoma in situ of prostate (SNOMED: 92691004)"
-    ],
-    "ground_truth_medications": [
-      "1 ML DOCEtaxel 20 MG/ML Injection (RxNorm: 1860480)",
-      "0.25 ML Leuprolide Acetate 30 MG/ML Prefilled Syringe (RxNorm: 752899)"
-    ],
-    "ground_truth_procedures": [],
-    "criteria_evaluation": {
-      "CP-101-C1": {
-        "description": "Confirmed active malignant neoplasm",
-        "satisfied": true,
-        "evidence": "Neoplasm of prostate (SNOMED: 126906006) and Carcinoma in situ of prostate (SNOMED: 92691004) [onset 2008-09-26]"
-      },
-      "CP-101-C2": {
-        "description": "Pathologic/radiologic evidence OR active oncology regimen",
-        "satisfied": true,
-        "evidence": "Active DOCEtaxel (RxNorm 1860480) + Leuprolide (RxNorm 752899) regimen constitutes continuation-of-therapy evidence per CP-101 section 2.2 (broadened). Colonoscopy on file is NOT valid evidence for prostate cancer (organ-system relevance)."
-      },
-      "CP-101-C3": {
-        "description": "Age 18 or older",
-        "satisfied": true,
-        "evidence": "Age: 83 years old"
-      }
-    },
-    "expected_citations": [
-      "Neoplasm of prostate (SNOMED: 126906006)",
-      "1 ML DOCEtaxel 20 MG/ML Injection"
-    ],
-    "notes": "Continuation-of-therapy case. Model must apply the non-exhaustive-list heuristic (section 2.2 broadened) and NOT credit the unrelated Colonoscopy. Cardiac arrest history is not a hard contraindication for continuing an already-tolerated regimen."
-  },
-  "CASE-004": {
-    "case_id": "CASE-004",
-    "patient_name": "Zachary Funk",
-    "policy_id": "CP-101",
-    "expected_risk_tier": "Moderate Risk",
-    "expected_recommendation": "Manual Review Required",
-    "expected_confidence": 75,
-    "ground_truth_conditions": [
-      "Malignant neoplasm of breast (SNOMED: 254837009)",
-      "Cardiac Arrest (SNOMED: 410429000)",
-      "History of cardiac arrest (SNOMED: 429007001)"
-    ],
-    "ground_truth_medications": [
-      "amLODIPine 2.5 MG Oral Tablet (RxNorm: 308136)"
-    ],
-    "ground_truth_procedures": [
-      "Mammography (SNOMED: 71651007)",
-      "Bone density scan (SNOMED: 312681000)"
-    ],
-    "criteria_evaluation": {
-      "CP-101-C1": {
-        "description": "Confirmed active malignant neoplasm",
-        "satisfied": true,
-        "evidence": "Malignant neoplasm of breast (disorder) (SNOMED: 254837009) [onset 2004-04-15]"
-      },
-      "CP-101-C2": {
-        "description": "Pathologic/radiologic evidence of malignancy (non-exhaustive list)",
-        "satisfied": true,
-        "evidence": "Mammography (SNOMED: 71651007) history through 2021-05-18"
-      },
-      "CP-101-C3": {
-        "description": "Age 18 or older",
-        "satisfied": true,
-        "evidence": "Age: 83 years old"
-      }
-    },
-    "expected_citations": [
-      "Malignant neoplasm of breast (disorder) (SNOMED: 254837009)",
-      "Cardiac Arrest (SNOMED: 410429000)",
-      "Mammography (procedure) (SNOMED: 71651007)"
-    ],
-    "notes": "All three CP-101 criteria satisfied. Cardiac Arrest history is a cardiotoxicity contraindication for combined chemo/radiation therapy - triggers Moderate Risk per heuristic (e); cardiology clearance required before proceeding."
-  },
-  "CASE-005": {
-    "case_id": "CASE-005",
-    "patient_name": "Mavis Gusikowski",
-    "policy_id": "CP-202",
-    "expected_risk_tier": "Moderate Risk",
-    "expected_recommendation": "Manual Review Required",
-    "expected_confidence": 70,
-    "ground_truth_conditions": [
-      "Epilepsy (SNOMED: 84757009)",
-      "Seizure disorder (SNOMED: 128613002)"
-    ],
-    "ground_truth_medications": ["Carbamazepine[Tegretol] (RxNorm: 308971)"],
-    "ground_truth_procedures": [],
-    "criteria_evaluation": {
-      "CP-202-C1": {
-        "description": "Active epilepsy or seizure disorder diagnosis",
-        "satisfied": true,
-        "evidence": "Epilepsy (SNOMED: 84757009) and Seizure disorder (SNOMED: 128613002)"
-      },
-      "CP-202-C2": {
-        "description": "Trial of at least 2 first-line generic AEDs for >=90 days each",
-        "satisfied": false,
-        "evidence": "Only 1 first-line AED on record (Carbamazepine); no second first-line AED (e.g. Levetiracetam, Lamotrigine, Valproic Acid, Phenytoin, Topiramate) documented"
-      },
-      "CP-202-C3": {
-        "description": "Documented treatment failure or intolerance",
-        "satisfied": false,
-        "evidence": "Cannot establish treatment failure from a single AED trial"
-      }
-    },
-    "expected_citations": [
-      "2.2 The patient MUST have documented trial of at least 2 first-line generic antiepileptic drugs (AEDs) for a minimum of 90 days each.",
-      "Epilepsy (SNOMED: 84757009)",
-      "Carbamazepine[Tegretol]"
-    ],
-    "notes": "Diagnosis satisfied but step therapy incomplete (1 of 2 first-line AEDs)."
-  },
-  "CASE-006": {
-    "case_id": "CASE-006",
+  "CASE-DEMO-202": {
+    "case_id": "CASE-DEMO-202",
     "patient_name": "Lewis D'Amore",
     "policy_id": "CP-202",
     "expected_risk_tier": "High Risk",
@@ -243,132 +78,10 @@
       "Epilepsy (SNOMED: 84757009)",
       "24 HR Donepezil hydrochloride 10 MG / Memantine hydrochloride 28 MG Extended Release Oral Capsule"
     ],
-    "notes": "Diagnosis satisfied but step therapy completely unmet. Heuristic (d): unrelated drug classes (dementia meds, statins) do NOT count toward step therapy."
+    "notes": "Diagnosis satisfied but step therapy completely unmet. Unrelated drug classes (dementia meds, statins) do NOT count toward step therapy."
   },
-  "CASE-007": {
-    "case_id": "CASE-007",
-    "patient_name": "Gabriela Aragon",
-    "policy_id": "CP-202",
-    "expected_risk_tier": "High Risk",
-    "expected_recommendation": "Deny",
-    "expected_confidence": 90,
-    "ground_truth_conditions": [
-      "Seizure disorder (SNOMED: 128613002)",
-      "History of single seizure (SNOMED: 703151001)"
-    ],
-    "ground_truth_medications": [
-      "Naproxen sodium 220 MG Oral Tablet (RxNorm: 849574)",
-      "Simvastatin 10 MG Oral Tablet (RxNorm: 314231)",
-      "diphenhydrAMINE Hydrochloride 25 MG Oral Tablet (RxNorm: 1049630)"
-    ],
-    "ground_truth_procedures": [],
-    "criteria_evaluation": {
-      "CP-202-C1": {
-        "description": "Active epilepsy or seizure disorder diagnosis",
-        "satisfied": true,
-        "evidence": "Seizure disorder (SNOMED: 128613002). Note: Epilepsy (84757009) NOT on record, but Seizure disorder is on the policy's accepted diagnosis list"
-      },
-      "CP-202-C2": {
-        "description": "Trial of at least 2 first-line generic AEDs for >=90 days each",
-        "satisfied": false,
-        "evidence": "ZERO first-line AEDs on record. Active meds (Naproxen NSAID, Simvastatin statin, Diphenhydramine antihistamine) - none are AEDs"
-      },
-      "CP-202-C3": {
-        "description": "Documented treatment failure or intolerance",
-        "satisfied": false,
-        "evidence": "No AED trials -> no basis for treatment failure documentation"
-      }
-    },
-    "expected_citations": [
-      "3.2 Authorization SHALL be denied if fewer than 2 first-line generic AEDs have been trialed for at least 90 days each.",
-      "Seizure disorder (SNOMED: 128613002)"
-    ],
-    "notes": "Diagnosis alone satisfied; step therapy completely unmet. Heuristic (d): unrelated drug classes do NOT count toward step therapy."
-  },
-  "CASE-008": {
-    "case_id": "CASE-008",
-    "patient_name": "Conrad Kiehn",
-    "policy_id": "CP-303",
-    "expected_risk_tier": "Moderate Risk",
-    "expected_recommendation": "Manual Review Required",
-    "expected_confidence": 70,
-    "ground_truth_conditions": [
-      "Osteoarthritis of knee (SNOMED: 239873007)",
-      "Body mass index 30+ - obesity (SNOMED: 162864005)"
-    ],
-    "ground_truth_medications": [
-      "Simvastatin 10 MG Oral Tablet (RxNorm: 314231)",
-      "Hydrochlorothiazide 25 MG Oral Tablet (RxNorm: 310798)",
-      "lisinopril 10 MG Oral Tablet (RxNorm: 314076)"
-    ],
-    "ground_truth_procedures": [],
-    "criteria_evaluation": {
-      "CP-303-C1": {
-        "description": "Active osteoarthritis of affected joint",
-        "satisfied": true,
-        "evidence": "Osteoarthritis of knee (SNOMED: 239873007) [onset 1997-05-17]"
-      },
-      "CP-303-C2": {
-        "description": "Conservative therapy trial for minimum 6 weeks",
-        "satisfied": false,
-        "evidence": "No NSAIDs, physical therapy, or corticosteroid injections documented. Active meds are all cardiovascular/lipid (Simvastatin, HCTZ, lisinopril) - none satisfy conservative therapy for knee OA"
-      },
-      "CP-303-C3": {
-        "description": "BMI under 40",
-        "satisfied": true,
-        "evidence": "Latest measured BMI 28.29 kg/m2 (well under 40), despite legacy 'obesity finding' SNOMED tag"
-      }
-    },
-    "expected_citations": [
-      "2.2 The patient MUST have documented trial of conservative therapy for a minimum of 6 weeks prior to the surgery request.",
-      "Osteoarthritis of knee (SNOMED: 239873007)"
-    ],
-    "notes": "Diagnosis satisfied and BMI safely under 40. Conservative therapy documentation missing - heuristic (d): unrelated drug classes do not count toward conservative therapy for the affected joint."
-  },
-  "CASE-009": {
-    "case_id": "CASE-009",
-    "patient_name": "Norma Lynch",
-    "policy_id": "CP-303",
-    "expected_risk_tier": "Low Risk",
-    "expected_recommendation": "Approve",
-    "expected_confidence": 85,
-    "ground_truth_conditions": [
-      "Osteoarthritis of knee (SNOMED: 239873007)",
-      "Chronic pain (SNOMED: 82423001)",
-      "History of myocardial infarction (SNOMED: 399211009)"
-    ],
-    "ground_truth_medications": [
-      "Naproxen sodium 220 MG Oral Tablet (RxNorm: 849574)",
-      "Simvastatin 10 MG Oral Tablet (RxNorm: 314231)",
-      "Clopidogrel 75 MG Oral Tablet (RxNorm: 309362)"
-    ],
-    "ground_truth_procedures": [],
-    "criteria_evaluation": {
-      "CP-303-C1": {
-        "description": "Active osteoarthritis of affected joint",
-        "satisfied": true,
-        "evidence": "Osteoarthritis of knee (SNOMED: 239873007) with associated Chronic pain (SNOMED: 82423001)"
-      },
-      "CP-303-C2": {
-        "description": "Conservative therapy trial for minimum 6 weeks",
-        "satisfied": true,
-        "evidence": "Documented Naproxen sodium (NSAID) trial in medication history satisfies conservative therapy requirement"
-      },
-      "CP-303-C3": {
-        "description": "BMI under 40",
-        "satisfied": true,
-        "evidence": "Latest measured BMI 27.37 kg/m2"
-      }
-    },
-    "expected_citations": [
-      "Osteoarthritis of knee (SNOMED: 239873007)",
-      "Chronic pain (SNOMED: 82423001)",
-      "Naproxen sodium 220 MG Oral Tablet"
-    ],
-    "notes": "All three CP-303 criteria satisfied. Prior MI and Coronary Heart Disease will require standard preoperative cardiac clearance and Clopidogrel management, but these are not automatic contraindications for elective TKA and should not downgrade to Moderate."
-  },
-  "CASE-010": {
-    "case_id": "CASE-010",
+  "CASE-DEMO-303": {
+    "case_id": "CASE-DEMO-303",
     "patient_name": "Lorita Kautzer",
     "policy_id": "CP-303",
     "expected_risk_tier": "Moderate Risk",
@@ -407,6 +120,6 @@
       "Osteoarthritis of knee (SNOMED: 239873007)",
       "Chronic congestive heart failure (disorder) (SNOMED: 88805009)"
     ],
-    "notes": "Active CHF (Furosemide + Carvedilol + Lisinopril regimen) is a significant surgical risk. Heuristic (e): confirmed diagnosis + serious cardiac comorbidity -> Moderate Risk with cardiology clearance."
+    "notes": "Active CHF (Furosemide + Carvedilol + Lisinopril regimen) is a significant surgical risk. Confirmed diagnosis + serious cardiac comorbidity -> Moderate Risk with cardiology clearance required."
   }
 }

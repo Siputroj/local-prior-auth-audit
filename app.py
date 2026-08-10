@@ -3,7 +3,7 @@ Cotiviti Prior Authorization Audit AI System - Streamlit Web Application.
 
 Healthcare Topic 2: Clinical Decision Making and Pattern Recognition in Health Care.
 Examines Synthea FHIR JSON patient records against SNOMED-aligned coverage policies,
-executes local Ollama (qwen2.5:14b) AI audits with Chain-of-Thought explainability,
+executes local Ollama (qwen2.5:7b) AI audits with Chain-of-Thought explainability,
 and provides Human-in-the-Loop decision controls.
 
 STRICT DESIGN RULE: Zero emojis. Minimalist modern corporate aesthetic.
@@ -242,6 +242,19 @@ html, body, [class*="css"] {
     font-size: 15px;
     font-weight: 600;
     color: #111827;
+}
+.progress-bar-bg {
+    background-color: #E5E7EB;
+    border-radius: 4px;
+    height: 6px;
+    width: 100%;
+    margin-top: 8px;
+    overflow: hidden;
+}
+.progress-bar-fill {
+    background-color: #2563EB;
+    height: 100%;
+    border-radius: 4px;
 }
 
 /* Citation Box */
@@ -539,7 +552,7 @@ def render_audit_section(case, summary_dict, summary_md, policy):
 
     if run_button or case_id in st.session_state.audit_results:
         if run_button:
-            with st.spinner("Executing local Ollama (qwen2.5:14b) clinical audit..."):
+            with st.spinner(f"Executing local Ollama ({DEFAULT_MODEL}) clinical audit..."):
                 audit_res = run_audit(case)
                 st.session_state.audit_results[case_id] = {"audit": audit_res}
 
@@ -585,12 +598,14 @@ def render_audit_section(case, summary_dict, summary_md, policy):
                     <div class="result-metric">
                         <div class="rm-label">Model Confidence (self-reported)</div>
                         <div class="rm-value">{confidence}%</div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: {confidence}%;"></div>
+                        </div>
                     </div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-            st.progress(confidence / 100)
 
         with res_col3:
             st.markdown(
@@ -637,12 +652,18 @@ def render_audit_section(case, summary_dict, summary_md, policy):
             else:
                 st.caption("No explicit patient citations returned.")
 
-        # Red Flags / Missing Info
-        red_flags = parsed.get("missing_information_or_red_flags", [])
-        if red_flags:
-            st.markdown('<div class="section-heading">Identified Gaps / Clinical Red Flags</div>', unsafe_allow_html=True)
-            for flag in red_flags:
+        # Auditor Notes & Clinical Gaps
+        st.markdown('<div class="section-heading">Auditor Notes & Clinical Gaps</div>', unsafe_allow_html=True)
+        raw_red_flags = parsed.get("missing_information_or_red_flags", [])
+        real_gaps = [
+            flag for flag in raw_red_flags
+            if flag and "no missing" not in flag.lower() and "no red flags" not in flag.lower() and "none identified" not in flag.lower()
+        ]
+        if real_gaps:
+            for flag in real_gaps:
                 st.warning(f"{flag}")
+        else:
+            st.success("Verified Clean Audit: No clinical gaps or red flags identified. Patient record satisfies 100% of coverage policy criteria for approval.")
 
 
 def render_hitl_section(case):

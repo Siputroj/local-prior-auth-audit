@@ -1,6 +1,3 @@
-# Implementation plan (internal working doc)
-implementation_plan.md
-
 # Python
 __pycache__/
 *.py[cod]
@@ -24,12 +21,13 @@ env/
 *.swo
 *~
 
-# OS
+# OS & Temp Files
 .DS_Store
 Thumbs.db
+~$*.docx
 
-# Synthea backup data
-synthea_data_backup/
+# Benchmark run artifacts
+benchmark/results/
 
 # Streamlit
 .streamlit/
