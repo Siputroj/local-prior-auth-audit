@@ -79,6 +79,28 @@ pip install -r requirements.txt
 
 ---
 
+### 3. Configure Local Environment (`.env`)
+
+You can easily configure which Ollama model and endpoint the system uses without changing any code. Create or edit the `.env` file in the root directory:
+
+```bash
+# Copy example configuration file
+cp .env.example .env
+```
+
+Inside `.env`, adjust the variables as needed:
+```env
+# Specify your local Ollama model (e.g. qwen2.5:7b, qwen2.5:14b, llama3:8b)
+OLLAMA_MODEL=qwen2.5:7b
+
+# Specify your local Ollama REST API endpoint
+OLLAMA_API_URL=http://localhost:11434/api/generate
+```
+
+The Streamlit UI dashboard, benchmark harness, and audit engine automatically load your selected model from `.env` and display the active model label dynamically across the application interface.
+
+---
+
 ## Running the Application
 
 ### Option A: Streamlit Interactive Web App (Demo Cases)
@@ -94,14 +116,14 @@ Once running, open `http://localhost:8501` in your browser.
 **Included Demo Cases**:
 | Case ID | Policy | Patient | Expected Classification |
 | :--- | :--- | :--- | :--- |
-| `CASE-DEMO-101` | CP-101 Oncology | Claretha Kuhlman | **Low Risk** (Approve) |
-| `CASE-DEMO-202` | CP-202 Neurology | Lewis D'Amore | **High Risk** (Deny) |
-| `CASE-DEMO-303` | CP-303 Orthopedics | Lorita Kautzer | **Moderate Risk** (Manual Review) |
+| `CASE-DEMO-001` | CP-101 Oncology | Claretha Kuhlman | **Low Risk** (Approve) |
+| `CASE-DEMO-002` | CP-202 Neurology | Mavis Gusikowski | **Moderate Risk** (Manual Review) |
+| `CASE-DEMO-003` | CP-202 Neurology | Lewis D'Amore | **High Risk** (Deny) |
 
 **Demo Case Explanations:**
-- **CASE-DEMO-101 (Low Risk)**: This case is classified as **Low Risk** because the patient has a confirmed, active diagnosis of Malignant neoplasm of breast (SNOMED: 254837009) and a documented history of mammography procedures, fully satisfying the mandatory clinical criteria of CP-101 without any contraindications.
-- **CASE-DEMO-202 (High Risk)**: This case is classified as **High Risk** because although the patient has an active seizure disorder diagnosis, they have exactly 0 valid first-line generic AEDs (antiepileptic drugs) in their medication history. This is a complete failure of the CP-202 step-therapy requirement, triggering an automatic denial recommendation.
-- **CASE-DEMO-303 (Moderate Risk)**: This case is classified as **Moderate Risk** because while the patient meets the criteria for total knee replacement (Osteoarthritis of knee), they also have a history of Congestive heart failure (SNOMED: 88805009). This presents a significant surgical risk and requires explicit cardiology clearance, mandating a human-in-the-loop manual review.
+- **CASE-DEMO-001 (Low Risk)**: Patient has a confirmed active Malignant neoplasm of breast (SNOMED: 254837009) with extensive mammography history. All CP-101 criteria are fully met.
+- **CASE-DEMO-002 (Moderate Risk)**: Patient has active Epilepsy and Seizure disorder, but only 1 valid first-line AED (Carbamazepine/Tegretol) on record. Per CP-202 Section 3.3, having only 1 AED trial when 2 are required triggers mandatory Manual Review.
+- **CASE-DEMO-003 (High Risk)**: Patient has active Epilepsy and Seizure disorder, but has exactly 0 valid first-line AEDs in their medication history (all meds are non-AED: Donepezil, Memantine, Simvastatin). Per CP-202 Section 3.4, zero prior AED trials is a HIGH RISK of policy non-compliance → Deny.
 
 ---
 

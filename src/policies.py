@@ -83,13 +83,15 @@ POLICIES = {
             "confirmed workup and SATISFIES 2.2 for continuation-of-therapy requests.\n\n"
             "2.3 The patient MUST be at least 18 years of age (age 18 or older; there is no upper "
             "age limit) at the time of the request.\n\n"
-            "Section 3 - Denial Criteria:\n"
-            "3.1 Authorization SHALL be denied if the patient does not have a confirmed active "
-            "malignant neoplasm diagnosis.\n"
-            "3.2 Authorization SHALL be denied only if there is NO pathologic or radiologic "
-            "evidence AND NO active oncology treatment regimen supporting the diagnosis.\n"
-            "3.3 Claims for oncology treatment in patients without active cancer diagnoses present "
-            "a HIGH RISK of inappropriate utilization."
+            "Section 3 - Decision Tiers & Criteria:\n"
+            "3.1 LOW RISK (Approve): Confirmed active malignant neoplasm diagnosis AND documented "
+            "diagnostic evidence or active oncology regimen AND age >= 18.\n"
+            "3.2 MODERATE RISK (Manual Review Required): Malignancy documented but missing diagnostic "
+            "or active regimen evidence (CP-101-C2 partial); OR chemotherapy/radiation initiation request "
+            "in a patient with active cardiac comorbidity (SNOMED: 410429000 Cardiac arrest, SNOMED: 88805009 "
+            "Chronic congestive heart failure) requiring cardiology clearance.\n"
+            "3.3 HIGH RISK (Deny): Patient has NO active malignant neoplasm diagnosis (CP-101-C1 failure), "
+            "OR age < 18 (CP-101-C3 failure)."
         ),
     },
 
@@ -149,20 +151,15 @@ POLICIES = {
             "in their medical record. Acceptable diagnoses include: Epilepsy (SNOMED: 84757009), "
             "Seizure disorder (SNOMED: 128613002), or Familial epilepsy (SNOMED: 230265002).\n\n"
             "2.2 The patient MUST have documented trial of at least 2 first-line generic "
-            "antiepileptic drugs (AEDs) for a minimum of 90 days each. First-line AEDs include: "
-            "Carbamazepine (Tegretol), Levetiracetam (Keppra), Lamotrigine (Lamictal), "
-            "Valproic Acid (Depakene), Phenytoin (Dilantin), or Topiramate (Topamax).\n\n"
+            "antiepileptic drugs (AEDs) for a minimum of 90 days each for full Low Risk approval. "
+            "First-line AEDs include: Carbamazepine (Tegretol), Levetiracetam (Keppra), "
+            "Lamotrigine (Lamictal), Valproic Acid (Depakene), Phenytoin (Dilantin), or Topiramate (Topamax).\n\n"
             "2.3 The patient MUST have documented treatment failure or intolerance to the "
             "first-line AEDs before specialty medications will be considered.\n\n"
-            "Section 3 - Denial Criteria:\n"
-            "3.1 Authorization SHALL be denied if the patient does not have an active epilepsy "
-            "or seizure disorder diagnosis.\n"
-            "3.2 Authorization SHALL be denied if fewer than 2 first-line generic AEDs have been "
-            "trialed for at least 90 days each.\n"
-            "3.3 Authorization SHALL require MANUAL REVIEW if the patient has trialed only 1 "
-            "first-line AED or if trial duration documentation is incomplete.\n"
-            "3.4 Claims for specialty AEDs without any prior generic AED trial history present "
-            "a HIGH RISK of policy non-compliance."
+            "Section 3 - Decision Tiers & Criteria:\n"
+            "3.1 LOW RISK (Approve): Patient has active epilepsy diagnosis AND at least 2 first-line generic AED trials documented.\n"
+            "3.2 MODERATE RISK (Manual Review Required): Patient has active epilepsy diagnosis AND documented trial of EXACTLY 1 first-line generic AED (or incomplete trial duration documentation).\n"
+            "3.3 HIGH RISK (Deny): Patient has NO active epilepsy diagnosis, OR has 0 first-line generic AED trials documented."
         ),
     },
 
@@ -173,10 +170,12 @@ POLICIES = {
         "effective_date": "2022-01-01",
         "version": "1.0",
         "description": (
-            "This policy governs prior authorization for total knee arthroplasty (TKA), "
-            "total hip arthroplasty (THA), and other major orthopedic joint replacement "
-            "surgeries. Conservative therapy must be attempted before surgical intervention."
+            "This policy governs prior authorization for elective total joint replacements."
         ),
+        "covered_procedures": [
+            "Total knee replacement (procedure) (SNOMED: 609588000)",
+            "Total hip replacement (procedure) (SNOMED: 52734007)",
+        ],
         "mandatory_criteria": [
             {
                 "id": "CP-303-C1",
@@ -224,15 +223,10 @@ POLICIES = {
             "Tablet), or corticosteroid injections.\n\n"
             "2.3 The patient's BMI MUST be below 40 for elective joint replacement surgery. "
             "Patients with BMI >= 40 must complete a supervised weight management program first.\n\n"
-            "Section 3 - Denial Criteria:\n"
-            "3.1 Authorization SHALL be denied if the patient does not have a confirmed active "
-            "osteoarthritis diagnosis of the affected joint.\n"
-            "3.2 Authorization SHALL be denied if no conservative therapy trial of at least 6 "
-            "weeks is documented in the medical record.\n"
-            "3.3 Authorization SHALL be denied if patient BMI is >= 40 without documented weight "
-            "management program completion.\n"
-            "3.4 Claims for joint replacement surgery without osteoarthritis diagnosis or "
-            "conservative therapy history present a HIGH RISK of inappropriate utilization."
+            "Section 3 - Decision Tiers & Criteria:\n"
+            "3.1 LOW RISK (Approve): Active osteoarthritis diagnosis AND conservative therapy documented AND BMI < 40 AND no severe active cardiac comorbidity.\n"
+            "3.2 MODERATE RISK (Manual Review Required): Osteoarthritis documented but no conservative therapy trial found (CP-303-C2 partial); OR active cardiac comorbidity (SNOMED: 88805009 Chronic congestive heart failure) requiring surgical clearance.\n"
+            "3.3 HIGH RISK (Deny): Patient has NO active osteoarthritis diagnosis (CP-303-C1 failure), OR patient BMI is >= 40 (CP-303-C3 failure)."
         ),
     },
 }

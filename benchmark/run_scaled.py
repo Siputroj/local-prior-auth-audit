@@ -99,12 +99,9 @@ def _run_single_audit(case: dict, model: str, timeout: int) -> Dict:
 
     payload = {
         "model": model,
-        "system": SYSTEM_PROMPT,
         "prompt": prompt,
         "stream": False,
-        "format": "json",
-        "keep_alive": "30m",
-        "options": {"temperature": 0.1, "top_p": 0.9, "num_predict": 450, "num_ctx": 4096},
+        "options": {"temperature": 0.1, "top_p": 0.9, "num_predict": 2560, "num_ctx": 4096},
     }
 
     t0 = time.time()

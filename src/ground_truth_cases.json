@@ -1,6 +1,6 @@
 {
-  "CASE-DEMO-101": {
-    "case_id": "CASE-DEMO-101",
+  "CASE-DEMO-001": {
+    "case_id": "CASE-DEMO-001",
     "patient_name": "Claretha Kuhlman",
     "policy_id": "CP-101",
     "expected_risk_tier": "Low Risk",
@@ -36,10 +36,49 @@
       "Malignant neoplasm of breast (disorder) (SNOMED: 254837009)",
       "Mammography (procedure) (SNOMED: 71651007)"
     ],
-    "notes": "Cardiac Arrest history (SNOMED: 410429000) is on record, but the requested item is diagnostic imaging (Mammography), not chemotherapy - no procedural contraindication."
+    "notes": "All three CP-101 criteria are met. Low Risk / Approve."
   },
-  "CASE-DEMO-202": {
-    "case_id": "CASE-DEMO-202",
+  "CASE-DEMO-002": {
+    "case_id": "CASE-DEMO-002",
+    "patient_name": "Mavis Gusikowski",
+    "policy_id": "CP-202",
+    "expected_risk_tier": "Moderate Risk",
+    "expected_recommendation": "Manual Review Required",
+    "expected_confidence": 80,
+    "ground_truth_conditions": [
+      "Epilepsy (SNOMED: 84757009)",
+      "Seizure disorder (SNOMED: 128613002)"
+    ],
+    "ground_truth_medications": [
+      "Carbamazepine[Tegretol] (RxNorm: 308971)"
+    ],
+    "ground_truth_procedures": [],
+    "criteria_evaluation": {
+      "CP-202-C1": {
+        "description": "Active epilepsy or seizure disorder diagnosis",
+        "satisfied": true,
+        "evidence": "Epilepsy (SNOMED: 84757009) and Seizure disorder (SNOMED: 128613002)"
+      },
+      "CP-202-C2": {
+        "description": "Trial of at least 2 first-line generic AEDs for >=90 days each",
+        "satisfied": false,
+        "evidence": "Only 1 first-line AED documented: Carbamazepine/Tegretol (RxNorm: 308971). Policy requires at least 2."
+      },
+      "CP-202-C3": {
+        "description": "Documented treatment failure or intolerance",
+        "satisfied": false,
+        "evidence": "Only 1 AED trial, insufficient for full treatment failure documentation across 2 drugs"
+      }
+    },
+    "expected_citations": [
+      "3.3 Authorization SHALL require MANUAL REVIEW if the patient has trialed only 1 first-line AED or if trial duration documentation is incomplete.",
+      "Epilepsy (SNOMED: 84757009)",
+      "Carbamazepine[Tegretol] (RxNorm: 308971)"
+    ],
+    "notes": "Diagnosis satisfied but only 1 of 2 required AED trials documented. Per CP-202 Section 3.3, this triggers Manual Review (Moderate Risk)."
+  },
+  "CASE-DEMO-003": {
+    "case_id": "CASE-DEMO-003",
     "patient_name": "Lewis D'Amore",
     "policy_id": "CP-202",
     "expected_risk_tier": "High Risk",
@@ -74,52 +113,10 @@
       }
     },
     "expected_citations": [
-      "3.2 Authorization SHALL be denied if fewer than 2 first-line generic AEDs have been trialed for at least 90 days each.",
+      "3.4 Claims for specialty AEDs without any prior generic AED trial history present a HIGH RISK of policy non-compliance.",
       "Epilepsy (SNOMED: 84757009)",
       "24 HR Donepezil hydrochloride 10 MG / Memantine hydrochloride 28 MG Extended Release Oral Capsule"
     ],
-    "notes": "Diagnosis satisfied but step therapy completely unmet. Unrelated drug classes (dementia meds, statins) do NOT count toward step therapy."
-  },
-  "CASE-DEMO-303": {
-    "case_id": "CASE-DEMO-303",
-    "patient_name": "Lorita Kautzer",
-    "policy_id": "CP-303",
-    "expected_risk_tier": "Moderate Risk",
-    "expected_recommendation": "Manual Review Required",
-    "expected_confidence": 70,
-    "ground_truth_conditions": [
-      "Osteoarthritis of knee (SNOMED: 239873007)",
-      "Chronic congestive heart failure (SNOMED: 88805009)",
-      "Idiopathic atrophic hypothyroidism (SNOMED: 83664006)"
-    ],
-    "ground_truth_medications": [
-      "Furosemide 40 MG Oral Tablet (RxNorm: 313988)",
-      "carvedilol 25 MG Oral Tablet (RxNorm: 200033)",
-      "lisinopril 20 MG Oral Tablet (RxNorm: 314077)",
-      "Levothyroxine Sodium 0.075 MG Oral Tablet (RxNorm: 966222)"
-    ],
-    "ground_truth_procedures": [],
-    "criteria_evaluation": {
-      "CP-303-C1": {
-        "description": "Active osteoarthritis of affected joint",
-        "satisfied": true,
-        "evidence": "Osteoarthritis of knee (SNOMED: 239873007) [onset 1996-06-15]"
-      },
-      "CP-303-C2": {
-        "description": "Conservative therapy trial for minimum 6 weeks",
-        "satisfied": false,
-        "evidence": "No active NSAIDs, physical therapy, or corticosteroid injections clearly documented for the affected knee. Ibuprofen appears in stopped-medications history but duration and indication are not specified"
-      },
-      "CP-303-C3": {
-        "description": "BMI under 40",
-        "satisfied": true,
-        "evidence": "Latest measured BMI 21.46 kg/m2"
-      }
-    },
-    "expected_citations": [
-      "Osteoarthritis of knee (SNOMED: 239873007)",
-      "Chronic congestive heart failure (disorder) (SNOMED: 88805009)"
-    ],
-    "notes": "Active CHF (Furosemide + Carvedilol + Lisinopril regimen) is a significant surgical risk. Confirmed diagnosis + serious cardiac comorbidity -> Moderate Risk with cardiology clearance required."
+    "notes": "Diagnosis satisfied but step therapy completely unmet. Zero valid AEDs on record. Per CP-202 Section 3.4, this is High Risk / Deny."
   }
 }

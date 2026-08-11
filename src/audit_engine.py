@@ -8,6 +8,7 @@ and verbatim evidence citations.
 """
 import json
 import os
+import re
 import time
 import requests
 from src.policies import get_policy_text
@@ -15,70 +16,80 @@ from src.fhir_parser import load_fhir_bundle, extract_patient_summary, format_cl
 from src.cases import get_patient_filepath
 
 
-OLLAMA_API_URL = "http://localhost:11434/api/generate"
-DEFAULT_MODEL = "qwen2.5:7b"
+def _load_env():
+    """Load key-value pairs from root .env file into os.environ if not already set."""
+    env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")
+    if os.path.exists(env_path):
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, val = line.split("=", 1)
+                    os.environ.setdefault(key.strip(), val.strip())
+
+
+_load_env()
+
+OLLAMA_API_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434/api/generate")
+DEFAULT_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
 
 
 SYSTEM_PROMPT = """You are an expert AI Prior Authorization Medical Auditor for an insurance company (Cotiviti).
 Your task is to evaluate a Prior Authorization Claim Request against the patient's FHIR medical record and the health plan's Coverage Policy.
 
 CRITICAL INSTRUCTIONS:
-1. You MUST operate as an explainable AI designed for Human-in-the-Loop review.
-2. Evaluate all mandatory policy criteria step-by-step using Chain-of-Thought (CoT) reasoning.
-3. Classify the claim into exactly one of three Risk Tiers:
-   - "Low Risk": Meets core policy clinical criteria (Recommendation: "Approve").
-   - "Moderate Risk": Ambiguity in step-therapy or criteria requiring clinician review (Recommendation: "Manual Review Required").
-   - "High Risk": Clear failure of mandatory clinical guidelines, missing core diagnosis, or severe contraindications present (Recommendation: "Deny").
+1. STRICT NO PRIOR KNOWLEDGE RULE — MANDATORY:
+   - You MUST base your audit decision ONLY on information explicitly documented in:
+     (a) The PATIENT MEDICAL RECORD provided above, and
+     (b) The COVERAGE POLICY provided above.
+   - You are ABSOLUTELY FORBIDDEN from assuming, inferring, or adding any unstated clinical risk, contraindication, procedure, or clearance requirement from your general medical knowledge.
+   - If all explicit criteria in the Coverage Policy are satisfied by the patient record, you MUST classify the claim as "Low Risk" (Approve). Do NOT invent reasons or clearance requirements to downgrade to Moderate or High Risk.
 
-4. CLINICAL REASONING HEURISTICS (apply carefully before deciding the tier):
-   (a) RECENT / STOPPED MEDICATION HISTORY RULE:
-       - Stopped medications marked "[STOPPED]" ARE VALID HISTORICAL TRIALS **ONLY IF** the medication belongs to the required drug class.
-       - FOR NEUROLOGY STEP THERAPY (CP-202): ONLY count antiepileptic drugs (AEDs): Carbamazepine (Tegretol), Levetiracetam (Keppra), Lamotrigine (Lamictal), Valproic Acid, Phenytoin, Topiramate.
-       - DO NOT COUNT NON-AED DRUGS! Statins (Simvastatin), dementia drugs (Donepezil, Memantine), NSAIDs (Naproxen), or blood pressure meds (Amlodipine) do NOT count toward AED step therapy under any circumstances!
-   (b) EXACT STEP THERAPY COUNT RULE (CP-202):
-       - Count ONLY valid first-line generic AEDs (active or stopped):
-         * Exactly 0 valid generic AEDs -> HIGH RISK (Recommendation: "Deny"). (e.g. Patient on Donepezil/Memantine/Simvastatin has 0 AEDs = High Risk!).
-         * Exactly 1 valid generic AED (e.g. Carbamazepine/Tegretol) -> MODERATE RISK (Recommendation: "Manual Review Required").
-         * 2 or more valid generic AEDs -> LOW RISK (Recommendation: "Approve").
-   (c) CARDIAC CLEARANCE RULE FOR MODERATE RISK (CP-101 & CP-303):
-       - If a patient requesting Chemotherapy (CP-101) or Joint Replacement Surgery (CP-303) has an active history of Cardiac Arrest (SNOMED: 410429000) or Congestive Heart Failure (SNOMED: 88805009), YOU MUST CLASSIFY THE CLAIM AS "Moderate Risk" (Recommendation: "Manual Review Required") due to required cardiology/surgical clearance.
-   (d) CONSERVATIVE THERAPY (CP-303):
-       - For Orthopedics (CP-303), if the patient has any active OR stopped record of NSAIDs (Naproxen sodium, Ibuprofen) or physical therapy/immobilization, treat CP-303 criterion 2.2 (conservative therapy) as SATISFIED.
-   (e) ONCOLOGY ELIGIBILITY (CP-101):
-       - Any active malignant neoplasm diagnosis (breast, prostate, colon, etc.) satisfies criterion 2.1.
-       - Any documented procedure (mammography, colonoscopy, biopsy, bone scan) OR active oncology medication regimen (Docetaxel, Leuprolide, Oxaliplatin, Leucovorin) satisfies criterion 2.2 for Low Risk approval.
-   (f) AVOID FALSE MODERATE/HIGH RISKS:
-       - DEFAULT TO LOW RISK WHEN CORE CRITERIA ARE MET AND NO CARDIAC CLEARANCE NEEDED.
-   (g) STRICT ENFORCEMENT OF HIGH RISK:
-       - Be EXTREMELY CONSERVATIVE. If a patient requires step therapy (CP-202) and has EXACTLY ZERO valid first-line generic AEDs, you MUST classify the claim as "High Risk" (Recommendation: "Deny"). Do NOT classify as Moderate Risk if the step therapy criterion is completely unmet.
+2. Classify the claim into exactly one of three Risk Tiers:
+   - "Low Risk": Meets all core policy clinical criteria explicitly documented in the record (Recommendation: "Approve").
+   - "Moderate Risk": Partial criteria met (e.g. exactly 1 valid first-line AED trial for CP-202), incomplete documentation, or explicit policy requirement for clinician review (Recommendation: "Manual Review Required").
+   - "High Risk": Total failure of mandatory clinical guidelines (e.g. zero valid AED trials for CP-202, missing core diagnosis, or BMI >= 40 for CP-303) (Recommendation: "Deny").
 
-5. Provide EXHAUSTIVE VERBATIM CITATIONS:
-   - "policy_verbatim_citations": Quote EVERY policy section or criterion evaluated in your Chain-of-Thought word-for-word.
-   - "patient_record_verbatim_citations": INCLUDE A VERBATIM ENTRY FOR EVERY SINGLE PIECE OF EVIDENCE REFERENCED IN YOUR CHAIN-OF-THOUGHT. Quote diagnoses (with SNOMED), procedures (with SNOMED and date), and medications evaluated. Do NOT omit procedures or dates.
-6. COMPLETE ALL REASONING STEPS: Every step in "chain_of_thought" MUST contain a complete clinical evaluation statement and a finding sentence.
-7. Output ONLY valid JSON matching the specified format. Do not include markdown preamble or extra conversational text outside the JSON.
+3. CLINICAL REASONING GUIDELINES:
+   (a) CP-101 (ONCOLOGY):
+       - C1: Confirmed active malignant neoplasm diagnosis (breast, prostate, colon, lung, etc.) -> SATISFIED if present.
+       - C2: Documented diagnostic procedure (mammography, colonoscopy, biopsy, bone scan, etc.) OR active oncology medication regimen (Docetaxel, Leuprolide, Oxaliplatin, Leucovorin, etc.) -> SATISFIED if present.
+       - C3: Patient MUST be 18 years of age or older. Note: Any age of 18 or greater (e.g. 25, 45, 65, 70, 85, 90, 105 years old) is >= 18 and SATISFIES criterion C3. An age of 105 is greater than 18 and SATISFIES C3.
+       - IF C1, C2, and C3 are met AND no active cardiac comorbidity (SNOMED: 410429000 Cardiac arrest, 88805009 Heart failure) is present on chemotherapy initiation, classify as "Low Risk" (Approve).
+       - EXCEPTION: If the request is for chemotherapy/radiation initiation AND the patient has an active cardiac condition (SNOMED: 410429000 Cardiac arrest, 88805009 Heart failure), classify as "Moderate Risk" (Manual Review Required) per Section 3.2.
+   (b) CP-202 (NEUROLOGY STEP THERAPY):
+       - C1: Active epilepsy or seizure disorder diagnosis.
+       - C2: First-line generic AEDs are ONLY: Carbamazepine (Tegretol), Levetiracetam (Keppra), Lamotrigine (Lamictal), Valproic Acid (Depakene), Phenytoin (Dilantin), Topiramate (Topamax). Active OR stopped records count as valid trials.
+         * Count = 0 valid AEDs (e.g. only non-AEDs like Donepezil, Memantine, Simvastatin) -> "High Risk" (Deny).
+         * Count = 1 valid AED (e.g. Carbamazepine/Tegretol) -> "Moderate Risk" (Manual Review Required).
+         * Count >= 2 valid AEDs -> "Low Risk" (Approve).
+   (c) CP-303 (ORTHOPEDICS):
+       - C1: Active osteoarthritis diagnosis (knee, hip, general).
+       - C2: Conservative therapy trial (NSAIDs e.g. Ibuprofen, Naproxen, physical therapy, immobilization, corticosteroid injection). Active OR stopped records count.
+       - C3: BMI < 40.
+       - IF C1, C2, and C3 (BMI < 40) are met, you MUST classify as "Low Risk" (Approve).
+
+4. OUTPUT SCHEMA INSTRUCTIONS:
+   - Output ONLY valid JSON matching the exact schema below.
+   - You MUST include "risk_tier" and "recommendation" as the VERY FIRST keys in your output JSON object!
+   - Keep "chain_of_thought" as a simple flat list of strings.
 
 REQUIRED JSON OUTPUT FORMAT:
 {
   "risk_tier": "Low Risk | Moderate Risk | High Risk",
-  "confidence_score": 90,
   "recommendation": "Approve | Manual Review Required | Deny",
+  "confidence_score": 95,
   "chain_of_thought": [
-    "Step 1 - Diagnosis Verification: [Detailed clinical evaluation finding...]",
-    "Step 2 - Diagnostic Procedure History: [Detailed clinical evaluation finding...]",
-    "Step 3 - Medication & Step Therapy: [Detailed clinical evaluation finding...]",
-    "Step 4 - Contraindications & Red Flags: [Detailed clinical evaluation finding or explicitly state no red flags found]"
+    "Step 1 - Diagnosis Verification: [Detailed finding sentence]",
+    "Step 2 - Diagnostic Procedure History: [Detailed finding sentence]",
+    "Step 3 - Medication & Step Therapy: [Detailed finding sentence]",
+    "Step 4 - Contraindications & Red Flags: [Detailed finding sentence]"
   ],
   "policy_verbatim_citations": [
-    "Exact sentence quoted from coverage policy..."
+    "Exact verbatim quote from policy..."
   ],
   "patient_record_verbatim_citations": [
-    "Exact diagnosis quoted from patient summary...",
-    "Exact procedure line quoted from patient summary (including SNOMED code and date)...",
-    "Exact medication line quoted from patient summary..."
-  ],
-  "missing_information_or_red_flags": [
-    "Description of missing documentation or clinical red flag..."
+    "Exact verbatim quote from patient record..."
   ]
 }
 """
@@ -88,7 +99,9 @@ def build_audit_prompt(case, patient_summary_md, policy_text):
     """Build the complete audit prompt for the LLM."""
     claim = case["claim"]
 
-    user_prompt = f"""=== PRIOR AUTHORIZATION CLAIM REQUEST ===
+    user_prompt = f"""{SYSTEM_PROMPT}
+
+=== PRIOR AUTHORIZATION CLAIM REQUEST ===
 - Claim ID: {case['id']}
 - Patient Name: {case['patient_name']}
 - Requested Procedure / Item: {claim['procedure']} (SNOMED / RxNorm: {claim['snomed_code']})
@@ -104,8 +117,7 @@ def build_audit_prompt(case, patient_summary_md, policy_text):
 
 === AUDIT TASK ===
 Evaluate the above claim against the Coverage Policy and Patient Record.
-Follow the system instructions to produce a step-by-step Chain-of-Thought audit in strict JSON format.
-REMINDER: Every single diagnosis, procedure (e.g. Mammography, Colonoscopy), medication, or clinical date evaluated in your Chain-of-Thought MUST be explicitly included in your "patient_record_verbatim_citations" array. Do NOT leave out any procedure or record detail that you used to form your audit decision!
+Follow the system instructions to produce a step-by-step Chain-of-Thought audit in strict JSON format:
 """
     return user_prompt
 
@@ -247,6 +259,69 @@ def warm_up_model(model=DEFAULT_MODEL, timeout_seconds=300):
         }
 
 
+def _normalize_parsed_json(data):
+    """Ensure standard keys exist and chain_of_thought is a flat list of strings."""
+    # Check all possible tier/result keys generated by local LLMs
+    tier_raw = str(
+        data.get("risk_tier")
+        or data.get("audit_result")
+        or data.get("recommendation")
+        or data.get("tier")
+        or ""
+    ).strip().lower()
+
+    if not tier_raw and isinstance(data.get("risk_assessment"), list) and len(data["risk_assessment"]) > 0:
+        first_item = data["risk_assessment"][0]
+        if isinstance(first_item, dict):
+            tier_raw = str(first_item.get("tier") or first_item.get("risk_tier") or first_item.get("recommendation") or "").strip().lower()
+
+    if "high" in tier_raw or "deny" in tier_raw:
+        data["risk_tier"] = "High Risk"
+    elif "low" in tier_raw or "approve" in tier_raw:
+        data["risk_tier"] = "Low Risk"
+    elif "moderate" in tier_raw or "manual" in tier_raw or "review" in tier_raw:
+        data["risk_tier"] = "Moderate Risk"
+    else:
+        data["risk_tier"] = "Moderate Risk"
+
+    rec_map = {
+        "Low Risk": "Approve",
+        "Moderate Risk": "Manual Review Required",
+        "High Risk": "Deny",
+    }
+    if data.get("risk_tier") in rec_map:
+        data["recommendation"] = rec_map[data["risk_tier"]]
+
+    # Handle alternate CoT key names (e.g. audit_reasoning)
+    if "chain_of_thought" not in data:
+        for alt_key in ["audit_reasoning", "reasoning", "cot_reasoning", "audit_steps"]:
+            if alt_key in data:
+                val = data.pop(alt_key)
+                if isinstance(val, list):
+                    flattened = []
+                    for item in val:
+                        if isinstance(item, dict):
+                            step_desc = item.get("description") or item.get("finding") or item.get("conclusion") or str(item)
+                            flattened.append(str(step_desc))
+                        else:
+                            flattened.append(str(item))
+                    data["chain_of_thought"] = flattened
+                elif isinstance(val, str):
+                    data["chain_of_thought"] = [val]
+
+    cot = data.get("chain_of_thought", [])
+    if isinstance(cot, list):
+        data["chain_of_thought"] = [str(x) for x in cot]
+    elif isinstance(cot, str):
+        data["chain_of_thought"] = [cot]
+
+    for list_key in ["policy_verbatim_citations", "patient_record_verbatim_citations"]:
+        if list_key not in data or not isinstance(data[list_key], list):
+            data[list_key] = []
+
+    return data
+
+
 def _clean_and_parse_json(text):
     """Extract and parse JSON from LLM response text, handling markdown blocks."""
     import re
@@ -259,27 +334,31 @@ def _clean_and_parse_json(text):
         clean_text = text.strip()
 
     try:
-        return json.loads(clean_text)
+        data = json.loads(clean_text)
+        return _normalize_parsed_json(data)
     except json.JSONDecodeError:
-        # Fallback: try finding first '{' and last '}'
-        start_idx = clean_text.find("{")
-        end_idx = clean_text.rfind("}")
-        if start_idx != -1 and end_idx != -1:
-            try:
-                return json.loads(clean_text[start_idx : end_idx + 1])
-            except json.JSONDecodeError:
-                pass
+        pass
 
-        # Return fallback error object
-        return {
-            "risk_tier": "Moderate Risk",
-            "confidence_score": 50,
-            "recommendation": "Manual Review Required",
-            "chain_of_thought": ["Raw response could not be fully parsed as structured JSON.", text[:500]],
-            "policy_verbatim_citations": [],
-            "patient_record_verbatim_citations": [],
-            "missing_information_or_red_flags": ["LLM response parsing format warning."],
-        }
+    # Fallback: try finding first '{' and last '}'
+    start_idx = clean_text.find("{")
+    end_idx = clean_text.rfind("}")
+    if start_idx != -1 and end_idx != -1:
+        try:
+            data = json.loads(clean_text[start_idx : end_idx + 1])
+            return _normalize_parsed_json(data)
+        except json.JSONDecodeError:
+            pass
+
+    # Return fallback error object
+    return {
+        "risk_tier": "Moderate Risk",
+        "confidence_score": 50,
+        "recommendation": "Manual Review Required",
+        "chain_of_thought": ["Raw response could not be fully parsed as structured JSON.", text[:500]],
+        "policy_verbatim_citations": [],
+        "patient_record_verbatim_citations": [],
+        "missing_information_or_red_flags": ["LLM response parsing format warning."],
+    }
 
 
 if __name__ == "__main__":
