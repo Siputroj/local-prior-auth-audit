@@ -114,9 +114,10 @@ def get_all_demo_cases():
     return DEMO_CASES
 
 
-def get_patient_filepath(case):
+def get_patient_filepath(case, patient_dir=None):
     """Get the full file path for a case's patient FHIR file."""
-    return os.path.join(SYNTHEA_DATA_DIR, case["patient_file"])
+    directory = patient_dir if patient_dir is not None else SYNTHEA_DATA_DIR
+    return os.path.join(directory, case["patient_file"])
 
 
 def list_case_ids():

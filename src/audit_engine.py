@@ -34,8 +34,41 @@ OLLAMA_API_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434/api/generat
 DEFAULT_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
 
 
-SYSTEM_PROMPT = """You are an expert AI Prior Authorization Medical Auditor for an insurance company (Cotiviti).
-Your task is to evaluate a Prior Authorization Claim Request against the patient's FHIR medical record and the health plan's Coverage Policy.
+EXTRACTION_SYSTEM_PROMPT = """You are a clinical fact extraction assistant.
+Your task is to parse a Patient Medical Record (FHIR Summary) and extract key clinical details required for prior authorization auditing.
+Extract and output ONLY a valid JSON object matching the exact schema below. Do not include any explanation.
+
+REQUIRED JSON OUTPUT FORMAT:
+{
+  "demographics": {
+    "age": 0,
+    "gender": "male | female"
+  },
+  "active_conditions": [
+    "Condition name (SNOMED: code)"
+  ],
+  "active_medications": [
+    "Medication name (RxNorm: code)"
+  ],
+  "stopped_or_historical_medications": [
+    "Medication name (RxNorm: code)"
+  ],
+  "procedures": [
+    "Procedure name (SNOMED: code) [date: YYYY-MM-DD]"
+  ],
+  "observations": [
+    "Observation type (e.g. BMI): value [date: YYYY-MM-DD]"
+  ]
+}
+"""
+
+def get_decomposed_system_prompt(policy_id):
+    from src.policies import get_policy
+    policy = get_policy(policy_id)
+    guidelines = policy.get("guidelines", "") if policy else ""
+
+    return f"""You are an expert AI Prior Authorization Medical Auditor for an insurance company (Cotiviti).
+Your task is to evaluate a Prior Authorization Claim Request against the patient's Extracted Clinical Facts and the health plan's Coverage Policy.
 
 CRITICAL INSTRUCTIONS:
 1. CLINICAL AUDIT STANDARDS:
@@ -47,24 +80,8 @@ CRITICAL INSTRUCTIONS:
    - "Moderate Risk": Partial criteria met (e.g. exactly 1 valid first-line AED trial for CP-202), incomplete documentation, or explicit policy requirement for clinician review (Recommendation: "Manual Review Required").
    - "High Risk": Total failure of mandatory clinical guidelines (e.g. zero valid AED trials for CP-202, missing core diagnosis, or BMI >= 40 for CP-303) (Recommendation: "Deny").
 
-3. CLINICAL REASONING GUIDELINES:
-   (a) CP-101 (ONCOLOGY):
-       - C1: Confirmed active malignant neoplasm diagnosis (breast, prostate, colon, lung, etc.) -> SATISFIED if present.
-       - C2: Documented diagnostic procedure (mammography, colonoscopy, biopsy, bone scan, etc.) OR active oncology medication regimen (Docetaxel, Leuprolide, Oxaliplatin, Leucovorin, etc.) -> SATISFIED if present.
-       - C3: Patient MUST be 18 years of age or older. Note: Any age of 18 or greater (e.g. 25, 45, 65, 70, 85, 90, 105 years old) is >= 18 and SATISFIES criterion C3. An age of 105 is greater than 18 and SATISFIES C3.
-       - IF C1, C2, and C3 are met AND no active cardiac comorbidity (SNOMED: 410429000 Cardiac arrest, 88805009 Heart failure) is present on chemotherapy initiation, classify as "Low Risk" (Approve).
-       - EXCEPTION: If the request is for chemotherapy/radiation initiation AND the patient has an active cardiac condition (SNOMED: 410429000 Cardiac arrest, 88805009 Heart failure), classify as "Moderate Risk" (Manual Review Required) per Section 3.2.
-   (b) CP-202 (NEUROLOGY STEP THERAPY):
-       - C1: Active epilepsy or seizure disorder diagnosis.
-       - C2: First-line generic AEDs are ONLY: Carbamazepine (Tegretol), Levetiracetam (Keppra), Lamotrigine (Lamictal), Valproic Acid (Depakene), Phenytoin (Dilantin), Topiramate (Topamax). Active OR stopped records count as valid trials.
-         * Count = 0 valid AEDs (e.g. only non-AEDs like Donepezil, Memantine, Simvastatin) -> "High Risk" (Deny).
-         * Count = 1 valid AED (e.g. Carbamazepine/Tegretol) -> "Moderate Risk" (Manual Review Required).
-         * Count >= 2 valid AEDs -> "Low Risk" (Approve).
-   (c) CP-303 (ORTHOPEDICS):
-       - C1: Active osteoarthritis diagnosis (knee, hip, general).
-       - C2: Conservative therapy trial (NSAIDs e.g. Ibuprofen, Naproxen, physical therapy, immobilization, corticosteroid injection). Active OR stopped records count.
-       - C3: BMI < 40.
-       - IF C1, C2, and C3 (BMI < 40) are met, you MUST classify as "Low Risk" (Approve).
+3. CLINICAL REASONING GUIDELINES FOR {policy_id}:
+{guidelines}
 
 4. OUTPUT SCHEMA INSTRUCTIONS:
    - Output ONLY valid JSON matching the exact schema below.
@@ -72,7 +89,7 @@ CRITICAL INSTRUCTIONS:
    - Keep "chain_of_thought" as a simple flat list of strings.
 
 REQUIRED JSON OUTPUT FORMAT:
-{
+{{
   "risk_tier": "Low Risk | Moderate Risk | High Risk",
   "recommendation": "Approve | Manual Review Required | Deny",
   "confidence_score": 95,
@@ -88,15 +105,81 @@ REQUIRED JSON OUTPUT FORMAT:
   "patient_record_verbatim_citations": [
     "Exact verbatim quote from patient record..."
   ]
+}}
+"""
+
+# Dynamic few-shot examples block for reference
+FEW_SHOT_EXAMPLE = """
+=== FEW-SHOT AUDIT EXAMPLE ===
+
+=== PRIOR AUTHORIZATION CLAIM REQUEST ===
+- Claim ID: CASE-EXAMPLE-01
+- Patient Name: John Doe
+- Requested Procedure / Item: Specialty AED: Lacosamide (Vimpat) 100 MG Oral Tablet (RxNorm: 230265002)
+- Reason for Request: Request for specialty antiepileptic drug for continued seizure activity
+- Requesting Provider: Dr. Robert Kim, MD - Neurology
+- Applicable Coverage Policy ID: CP-202
+
+=== COVERAGE POLICY (CP-202) ===
+Section 2 - Mandatory Clinical Criteria:
+2.1 The patient MUST have an active epilepsy or seizure disorder diagnosis documented in their medical record. Acceptable diagnoses include: Epilepsy (SNOMED: 84757009), Seizure disorder (SNOMED: 128613002).
+2.2 The patient MUST have documented trial of at least 2 first-line generic antiepileptic drugs (AEDs). First-line AEDs include: Carbamazepine (Tegretol), Levetiracetam (Keppra).
+Section 3 - Decision Tiers & Criteria:
+3.1 LOW RISK (Approve): Patient has active epilepsy diagnosis AND at least 2 first-line generic AED trials documented.
+3.2 MODERATE RISK (Manual Review Required): Patient has active epilepsy diagnosis AND documented trial of EXACTLY 1 first-line generic AED (or incomplete trial duration documentation).
+3.3 HIGH RISK (Deny): Patient has NO active epilepsy diagnosis, OR has 0 first-line generic AED trials documented.
+
+=== EXTRACTED CLINICAL FACTS ===
+{
+  "demographics": {
+    "age": 45,
+    "gender": "male"
+  },
+  "active_conditions": [
+    "Seizure disorder (SNOMED: 128613002)"
+  ],
+  "active_medications": [
+    "Levetiracetam (Keppra) (RxNorm: 1043400)"
+  ],
+  "stopped_or_historical_medications": [
+    "Carbamazepine (Tegretol) (RxNorm: 308971)"
+  ],
+  "procedures": [],
+  "observations": [
+    "BMI: 28"
+  ]
+}
+
+=== EXPECTED JSON OUTPUT ===
+{
+  "risk_tier": "Low Risk",
+  "recommendation": "Approve",
+  "confidence_score": 95,
+  "chain_of_thought": [
+    "Step 1 - Diagnosis Verification: Patient has documented active Seizure disorder (SNOMED: 128613002), satisfying CP-202-2.1.",
+    "Step 2 - Diagnostic Procedure History: No diagnostic procedures required for CP-202.",
+    "Step 3 - Medication & Step Therapy: Patient has active Levetiracetam (Keppra) and historical Carbamazepine (Tegretol) trials on record. This represents 2 first-line generic AED trials, satisfying the CP-202-2.2 step-therapy requirement.",
+    "Step 4 - Contraindications & Red Flags: No cardiac comorbidities or contraindications present."
+  ],
+  "policy_verbatim_citations": [
+    "2.1 The patient MUST have an active epilepsy or seizure disorder diagnosis documented",
+    "2.2 The patient MUST have documented trial of at least 2 first-line generic antiepileptic drugs (AEDs)."
+  ],
+  "patient_record_verbatim_citations": [
+    "Seizure disorder (SNOMED: 128613002)",
+    "Levetiracetam (Keppra)",
+    "Carbamazepine (Tegretol)"
+  ]
 }
 """
 
 
-def build_audit_prompt(case, patient_summary_md, policy_text):
-    """Build the complete audit prompt for the LLM."""
+def build_audit_prompt(case, extracted_facts_json, policy_text):
+    """Build the complete audit prompt for the LLM using extracted facts."""
     claim = case["claim"]
+    sys_prompt = get_decomposed_system_prompt(case["policy_id"])
 
-    user_prompt = f"""{SYSTEM_PROMPT}
+    user_prompt = f"""{sys_prompt}
 
 === PRIOR AUTHORIZATION CLAIM REQUEST ===
 - Claim ID: {case['id']}
@@ -109,29 +192,24 @@ def build_audit_prompt(case, patient_summary_md, policy_text):
 === COVERAGE POLICY ({case['policy_id']}) ===
 {policy_text}
 
-=== PATIENT MEDICAL RECORD (FHIR SUMMARY) ===
-{patient_summary_md}
+=== EXTRACTED CLINICAL FACTS (JSON) ===
+{extracted_facts_json}
 
 === AUDIT TASK ===
-Evaluate the above claim against the Coverage Policy and Patient Record.
+Evaluate the above claim against the Coverage Policy and the Extracted Clinical Facts.
 Follow the system instructions to produce a step-by-step Chain-of-Thought audit in strict JSON format:
 """
     return user_prompt
 
 
-def run_audit(case, model=DEFAULT_MODEL, timeout_seconds=600):
+def run_audit(case, model=DEFAULT_MODEL, timeout_seconds=600, patient_dir=None):
     """
-    Execute a local Ollama AI audit for a given prior auth case.
-
-    Returns dict containing:
-        - raw_response: text output from LLM
-        - parsed_json: structured JSON response
-        - latency_seconds: inference execution time
-        - status: "success" or "error"
-        - error_message: string if error occurred
+    Execute a decomposed multi-step local Ollama AI audit:
+      1. Extract relevant clinical facts from patient record.
+      2. Audits policy compliance against the extracted facts and policy.
     """
     # 1. Load patient FHIR data
-    fpath = get_patient_filepath(case)
+    fpath = get_patient_filepath(case, patient_dir=patient_dir)
     if not os.path.exists(fpath):
         return {
             "status": "error",
@@ -152,41 +230,74 @@ def run_audit(case, model=DEFAULT_MODEL, timeout_seconds=600):
             "latency_seconds": 0,
         }
 
-    # 3. Build prompt
-    prompt = build_audit_prompt(case, patient_summary_md, policy_text)
+    start_time = time.time()
 
-    # 4. Call Ollama REST API
-    payload = {
+    # Step 1: Clinical Fact Extraction
+    extract_payload = {
         "model": model,
-        "system": SYSTEM_PROMPT,
+        "system": EXTRACTION_SYSTEM_PROMPT,
+        "prompt": f"Please parse this patient FHIR summary and extract clinical details:\n\n{patient_summary_md}",
+        "stream": False,
+        "format": "json",
+        "keep_alive": "30m",
+        "options": {
+            "temperature": 0.1,
+            "top_p": 0.9,
+            "num_predict": 1024,
+            "num_ctx": 4096,
+        },
+    }
+
+    try:
+        extract_response = requests.post(OLLAMA_API_URL, json=extract_payload, timeout=timeout_seconds)
+        if extract_response.status_code != 200:
+            return {
+                "status": "error",
+                "error_message": f"Extraction HTTP error {extract_response.status_code}: {extract_response.text}",
+                "latency_seconds": round(time.time() - start_time, 2),
+            }
+        extracted_facts_json = extract_response.json().get("response", "{}")
+    except Exception as e:
+        return {
+            "status": "error",
+            "error_message": f"Fact extraction failed: {str(e)}",
+            "latency_seconds": round(time.time() - start_time, 2),
+        }
+
+    # Step 2: Policy Compliance Evaluation
+    prompt = build_audit_prompt(case, extracted_facts_json, policy_text)
+    sys_prompt = get_decomposed_system_prompt(case["policy_id"])
+
+    audit_payload = {
+        "model": model,
+        "system": sys_prompt,
         "prompt": prompt,
         "stream": False,
         "format": "json",
         "keep_alive": "30m",
         "options": {
-            "temperature": 0.1,  # Low temperature for deterministic, factual audit
+            "temperature": 0.1,
             "top_p": 0.9,
             "num_predict": 2048,
             "num_ctx": 4096,
         },
     }
 
-    start_time = time.time()
     try:
-        response = requests.post(OLLAMA_API_URL, json=payload, timeout=timeout_seconds)
+        response = requests.post(OLLAMA_API_URL, json=audit_payload, timeout=timeout_seconds)
         latency = round(time.time() - start_time, 2)
 
         if response.status_code != 200:
             return {
                 "status": "error",
-                "error_message": f"Ollama HTTP error {response.status_code}: {response.text}",
+                "error_message": f"Audit HTTP error {response.status_code}: {response.text}",
                 "latency_seconds": latency,
             }
 
         response_data = response.json()
         raw_text = response_data.get("response", "")
 
-        # 5. Parse JSON output
+        # Parse JSON output
         parsed_json = _clean_and_parse_json(raw_text)
 
         return {

@@ -92,6 +92,16 @@ POLICIES = {
             "requiring cardiology clearance.\n"
             "3.3 HIGH RISK (Deny): Patient has NO active malignant neoplasm diagnosis, OR age < 18."
         ),
+        "guidelines": (
+            "- C1: Confirmed active malignant neoplasm diagnosis (breast, prostate, colon, lung, etc.) -> SATISFIED if present.\n"
+            "- C2: Documented diagnostic procedure (mammography, colonoscopy, biopsy, bone scan, etc.) OR active oncology medication regimen (Docetaxel, Leuprolide, Oxaliplatin, Leucovorin, etc.) -> SATISFIED if present.\n"
+            "- C3: Patient MUST be 18 years of age or older.\n"
+            "- IF C1, C2, and C3 are met AND no active cardiac comorbidity (SNOMED: 410429000 Cardiac arrest, 88805009 Heart failure) is present on chemotherapy initiation, classify as 'Low Risk' (Approve).\n"
+            "- EXCEPTION: If the request is for chemotherapy/radiation initiation AND the patient has an active cardiac condition (SNOMED: 410429000 Cardiac arrest, 88805009 Heart failure), classify as 'Moderate Risk' (Manual Review Required) per Section 3.2.\n"
+            "- CLINICAL CLARIFICATIONS:\n"
+            "  * Continuation of Therapy vs. Initiation: If a patient has an ACTIVE oncology treatment regimen already documented on record (e.g. active chemotherapy, hormone therapy, or radiation with a matching diagnosis), this qualifies as continuation of therapy.\n"
+            "  * Cardiac comorbidity rules (triggering Moderate Risk) ONLY apply to chemotherapy/radiation INITIATION requests (i.e. patients with NO active oncology regimen on record). Continuation of therapy requests do NOT require cardiology clearance and must be classified as Low Risk if all eligibility criteria are met."
+        )
     },
 
     "CP-202": {
@@ -156,10 +166,17 @@ POLICIES = {
             "2.3 The patient MUST have documented treatment failure or intolerance to the "
             "first-line AEDs before specialty medications will be considered.\n\n"
             "Section 3 - Decision Tiers & Criteria:\n"
-            "3.1 LOW RISK (Approve): Patient has active epilepsy diagnosis AND at least 2 first-line generic AED trials documented.\n"
+            "3.1 LOW RISK (Approve): Patient has active epilepsy diagnosis AND AT LEAST 2 first-line generic AED trials DOCUMENTED.\n"
             "3.2 MODERATE RISK (Manual Review Required): Patient has active epilepsy diagnosis AND documented trial of EXACTLY 1 first-line generic AED (or incomplete trial duration documentation).\n"
             "3.3 HIGH RISK (Deny): Patient has NO active epilepsy diagnosis, OR has 0 first-line generic AED trials documented."
         ),
+        "guidelines": (
+            "- C1: Active epilepsy or seizure disorder diagnosis.\n"
+            "- C2: First-line generic AEDs are ONLY: Carbamazepine (Tegretol), Levetiracetam (Keppra), Lamotrigine (Lamictal), Valproic Acid (Depakene), Phenytoin (Dilantin), Topiramate (Topamax). Active OR stopped records count as valid trials.\n"
+            "  * Count = 0 valid AEDs (e.g. only non-AEDs like Donepezil, Memantine, Simvastatin) -> 'High Risk' (Deny).\n"
+            "  * Count = 1 valid AED (e.g. Carbamazepine/Tegretol) -> 'Moderate Risk' (Manual Review Required).\n"
+            "  * Count >= 2 valid AEDs -> 'Low Risk' (Approve)."
+        )
     },
 
     "CP-303": {
@@ -227,6 +244,13 @@ POLICIES = {
             "3.2 MODERATE RISK (Manual Review Required): Osteoarthritis documented but no conservative therapy trial found; OR active severe cardiac comorbidity (e.g. chronic heart failure) requiring surgical clearance.\n"
             "3.3 HIGH RISK (Deny): Patient has NO active osteoarthritis diagnosis, OR patient BMI is >= 40 without weight management program."
         ),
+        "guidelines": (
+            "- C1: Active osteoarthritis diagnosis (knee, hip, general).\n"
+            "- C2: Conservative therapy trial (NSAIDs e.g. Ibuprofen, Naproxen, physical therapy, immobilization, corticosteroid injection). Active OR stopped records count.\n"
+            "- C3: BMI < 40.\n"
+            "- IF C1, C2, and C3 (BMI < 40) are met, you MUST classify as 'Low Risk' (Approve).\n"
+            "- EXCEPTION: Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance and triggers 'Moderate Risk' (Manual Review Required)."
+        )
     },
 }
 

@@ -27,7 +27,7 @@ Thumbs.db
 ~$*.docx
 
 # Benchmark run artifacts
-benchmark/results/
+benchmark/
 
 # Streamlit
 .streamlit/
