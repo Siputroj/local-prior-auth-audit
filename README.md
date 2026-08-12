@@ -165,10 +165,9 @@ local-prior-auth-audit/
 │   ├── policies.py            # Clinical coverage policies (CP-101, CP-202, CP-303)
 │   └── synthea_data/          # Demo FHIR bundles
 └── benchmark/                 # Scaled benchmark evaluation harness
-    ├── cases_100.json         # 100-case evaluation dataset
+    ├── ground_truth.json      # 100-case expert ground-truth dataset
     ├── config.py              # Path configurations
     ├── metrics.py             # Macro-F1 & precision/recall metric computer
-    ├── policy_rules.py        # Deterministic reference rules
     ├── run_scaled.py          # CLI runner for 100-case evaluation
     ├── synthea_data/          # FHIR patient bundles for benchmark
     └── results/               # Generated benchmark outputs (gitignored)

@@ -12,7 +12,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-001",
@@ -27,7 +27,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-002",
@@ -42,7 +42,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Chemotherapy initiation request with active cardiac condition (SNOMED: ['410429000']) requires cardiology clearance."
+    "rule_rationale": "Chemotherapy initiation in patient with active cardiac comorbidity (['410429000']) requires cardiology clearance."
   },
   {
     "id": "BENCH-CP-101-003",
@@ -57,7 +57,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-004",
@@ -72,7 +72,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-005",
@@ -87,7 +87,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-006",
@@ -102,7 +102,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-007",
@@ -117,7 +117,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-008",
@@ -132,7 +132,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-009",
@@ -147,7 +147,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-010",
@@ -162,7 +162,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-011",
@@ -177,7 +177,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-012",
@@ -192,7 +192,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-013",
@@ -207,7 +207,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-014",
@@ -222,7 +222,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-015",
@@ -237,7 +237,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-016",
@@ -252,7 +252,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-017",
@@ -267,7 +267,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-018",
@@ -282,7 +282,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-019",
@@ -297,7 +297,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Chemotherapy initiation request with active cardiac condition (SNOMED: ['410429000']) requires cardiology clearance."
+    "rule_rationale": "Chemotherapy initiation in patient with active cardiac comorbidity (['410429000']) requires cardiology clearance."
   },
   {
     "id": "BENCH-CP-101-020",
@@ -312,7 +312,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-021",
@@ -327,7 +327,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-022",
@@ -342,7 +342,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-023",
@@ -357,7 +357,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-024",
@@ -372,7 +372,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-025",
@@ -387,7 +387,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-026",
@@ -402,7 +402,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-027",
@@ -417,7 +417,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-028",
@@ -432,7 +432,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Chemotherapy initiation request with active cardiac condition (SNOMED: ['410429000']) requires cardiology clearance."
+    "rule_rationale": "Chemotherapy initiation in patient with active cardiac comorbidity (['410429000']) requires cardiology clearance."
   },
   {
     "id": "BENCH-CP-101-029",
@@ -447,7 +447,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-030",
@@ -462,7 +462,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Diagnostic imaging present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-031",
@@ -477,7 +477,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Active malignancy present (C1 met). Active oncology regimen present."
+    "rule_rationale": "Patient meets all diagnostic, clinical evidence, and age criteria for CP-101."
   },
   {
     "id": "BENCH-CP-101-032",
@@ -492,7 +492,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Chemotherapy initiation request with active cardiac condition (SNOMED: ['410429000']) requires cardiology clearance."
+    "rule_rationale": "Chemotherapy initiation in patient with active cardiac comorbidity (['410429000']) requires cardiology clearance."
   },
   {
     "id": "BENCH-CP-202-000",
@@ -507,7 +507,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-001",
@@ -522,7 +522,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-002",
@@ -537,7 +537,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-003",
@@ -552,7 +552,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-004",
@@ -567,7 +567,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-005",
@@ -582,7 +582,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-006",
@@ -597,7 +597,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-007",
@@ -612,7 +612,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-008",
@@ -627,7 +627,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-009",
@@ -642,7 +642,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-010",
@@ -657,7 +657,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-011",
@@ -672,7 +672,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-012",
@@ -687,7 +687,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-013",
@@ -702,7 +702,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-014",
@@ -717,7 +717,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-015",
@@ -732,7 +732,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-016",
@@ -747,7 +747,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-017",
@@ -762,7 +762,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-018",
@@ -777,7 +777,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-019",
@@ -792,7 +792,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-020",
@@ -807,7 +807,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-021",
@@ -822,7 +822,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-022",
@@ -837,7 +837,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-023",
@@ -852,7 +852,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-024",
@@ -867,7 +867,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-025",
@@ -882,7 +882,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-026",
@@ -897,7 +897,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-027",
@@ -912,7 +912,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Only 1 first-line AED trial documented (['tegretol']); CP-202-C2 requires >=2."
+    "rule_rationale": "Patient has active epilepsy diagnosis but trial of exactly 1 first-line generic AED (['tegretol']) on record."
   },
   {
     "id": "BENCH-CP-202-028",
@@ -927,7 +927,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-029",
@@ -942,7 +942,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-030",
@@ -957,7 +957,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-031",
@@ -972,7 +972,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-202-032",
@@ -987,7 +987,7 @@
     },
     "expected_risk_tier": "High Risk",
     "expected_recommendation": "Deny",
-    "rule_rationale": "Zero first-line AED trials on record (CP-202-C2 fully unmet)."
+    "rule_rationale": "Zero first-line generic AED trials documented on record."
   },
   {
     "id": "BENCH-CP-303-000",
@@ -1002,7 +1002,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-001",
@@ -1017,7 +1017,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-002",
@@ -1032,7 +1032,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-003",
@@ -1047,7 +1047,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-004",
@@ -1062,7 +1062,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-005",
@@ -1077,7 +1077,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-006",
@@ -1092,7 +1092,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-007",
@@ -1107,7 +1107,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-008",
@@ -1122,7 +1122,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-009",
@@ -1137,7 +1137,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-010",
@@ -1152,7 +1152,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-011",
@@ -1167,7 +1167,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-012",
@@ -1182,7 +1182,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-013",
@@ -1197,7 +1197,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-014",
@@ -1212,7 +1212,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis documented but no conservative therapy trial found (CP-303-C2)."
+    "rule_rationale": "Osteoarthritis documented but no conservative therapy trials found (CP-303-C2 partial)."
   },
   {
     "id": "BENCH-CP-303-015",
@@ -1227,7 +1227,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-016",
@@ -1242,7 +1242,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-017",
@@ -1257,7 +1257,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-018",
@@ -1272,7 +1272,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-019",
@@ -1287,7 +1287,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-020",
@@ -1302,7 +1302,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-021",
@@ -1317,7 +1317,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-022",
@@ -1332,7 +1332,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis documented but no conservative therapy trial found (CP-303-C2)."
+    "rule_rationale": "Osteoarthritis documented but no conservative therapy trials found (CP-303-C2 partial)."
   },
   {
     "id": "BENCH-CP-303-023",
@@ -1347,7 +1347,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-024",
@@ -1362,7 +1362,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-025",
@@ -1377,7 +1377,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-026",
@@ -1392,7 +1392,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-027",
@@ -1407,7 +1407,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis documented but no conservative therapy trial found (CP-303-C2)."
+    "rule_rationale": "Osteoarthritis documented but no conservative therapy trials found (CP-303-C2 partial)."
   },
   {
     "id": "BENCH-CP-303-028",
@@ -1422,7 +1422,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-029",
@@ -1437,7 +1437,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-030",
@@ -1452,7 +1452,7 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   },
   {
     "id": "BENCH-CP-303-031",
@@ -1467,7 +1467,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-032",
@@ -1482,7 +1482,7 @@
     },
     "expected_risk_tier": "Moderate Risk",
     "expected_recommendation": "Manual Review Required",
-    "rule_rationale": "Osteoarthritis + conservative therapy met, but cardiac comorbidity (SNOMED: ['88805009']) requires surgical clearance."
+    "rule_rationale": "Active severe cardiac comorbidity (congestive heart failure) requires surgical clearance."
   },
   {
     "id": "BENCH-CP-303-033",
@@ -1497,6 +1497,6 @@
     },
     "expected_risk_tier": "Low Risk",
     "expected_recommendation": "Approve",
-    "rule_rationale": "Osteoarthritis, conservative therapy, and BMI criteria all met."
+    "rule_rationale": "Osteoarthritis diagnosis, conservative therapy trial, and BMI criteria all satisfied."
   }
 ]

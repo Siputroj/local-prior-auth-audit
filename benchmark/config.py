@@ -12,7 +12,7 @@ import os
 BENCHMARK_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Frozen 100-case fixture (id -> case object).
-CASES_JSON_PATH = os.path.join(BENCHMARK_DIR, "cases_100.json")
+CASES_JSON_PATH = os.path.join(BENCHMARK_DIR, "ground_truth.json")
 
 # 97 patient FHIR bundles referenced by the 100 cases (some patients are
 # shared across policies).

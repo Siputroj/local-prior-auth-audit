@@ -87,11 +87,10 @@ POLICIES = {
             "3.1 LOW RISK (Approve): Confirmed active malignant neoplasm diagnosis AND documented "
             "diagnostic evidence or active oncology regimen AND age >= 18.\n"
             "3.2 MODERATE RISK (Manual Review Required): Malignancy documented but missing diagnostic "
-            "or active regimen evidence (CP-101-C2 partial); OR chemotherapy/radiation initiation request "
-            "in a patient with active cardiac comorbidity (SNOMED: 410429000 Cardiac arrest, SNOMED: 88805009 "
-            "Chronic congestive heart failure) requiring cardiology clearance.\n"
-            "3.3 HIGH RISK (Deny): Patient has NO active malignant neoplasm diagnosis (CP-101-C1 failure), "
-            "OR age < 18 (CP-101-C3 failure)."
+            "or active regimen evidence; OR chemotherapy/radiation initiation request in a patient with "
+            "active severe cardiac comorbidity (e.g. active cardiac arrest, chronic heart failure) "
+            "requiring cardiology clearance.\n"
+            "3.3 HIGH RISK (Deny): Patient has NO active malignant neoplasm diagnosis, OR age < 18."
         ),
     },
 
@@ -224,9 +223,9 @@ POLICIES = {
             "2.3 The patient's BMI MUST be below 40 for elective joint replacement surgery. "
             "Patients with BMI >= 40 must complete a supervised weight management program first.\n\n"
             "Section 3 - Decision Tiers & Criteria:\n"
-            "3.1 LOW RISK (Approve): Active osteoarthritis diagnosis AND conservative therapy documented AND BMI < 40 AND no severe active cardiac comorbidity.\n"
-            "3.2 MODERATE RISK (Manual Review Required): Osteoarthritis documented but no conservative therapy trial found (CP-303-C2 partial); OR active cardiac comorbidity (SNOMED: 88805009 Chronic congestive heart failure) requiring surgical clearance.\n"
-            "3.3 HIGH RISK (Deny): Patient has NO active osteoarthritis diagnosis (CP-303-C1 failure), OR patient BMI is >= 40 (CP-303-C3 failure)."
+            "3.1 LOW RISK (Approve): Active osteoarthritis diagnosis AND conservative therapy documented AND BMI < 40.\n"
+            "3.2 MODERATE RISK (Manual Review Required): Osteoarthritis documented but no conservative therapy trial found; OR active severe cardiac comorbidity (e.g. chronic heart failure) requiring surgical clearance.\n"
+            "3.3 HIGH RISK (Deny): Patient has NO active osteoarthritis diagnosis, OR patient BMI is >= 40 without weight management program."
         ),
     },
 }
