@@ -38,3 +38,7 @@ benchmark/
 
 # Logs
 *.log
+
+# Large media / recording files
+jason_siputro_recording.mp4
+jason_siputro_recording.mp4.zip
