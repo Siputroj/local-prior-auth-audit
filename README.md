@@ -23,13 +23,6 @@ This application automates and audits **Prior Authorization (PA) claims** agains
 
 ---
 
-## Deliverables Included
-
-- **`app.py` & `src/`**: Streamlit interactive demo dashboard.
-- **`benchmark/`**: Scaled 100-case evaluation harness measuring macro-F1, grounding fidelity, and latency.
-- **`paper_submission.docx`**: 2-page research report (+ bibliography) on *The Strategic Imperative of Local AI Deployment in Healthcare Operations*.
-
----
 
 ## Prerequisites
 
@@ -126,49 +119,3 @@ Once running, open `http://localhost:8501` in your browser.
 - **CASE-DEMO-003 (High Risk)**: Patient has active Epilepsy and Seizure disorder, but has exactly 0 valid first-line AEDs in their medication history (all meds are non-AED: Donepezil, Memantine, Simvastatin). Per CP-202 Section 3.4, zero prior AED trials is a HIGH RISK of policy non-compliance → Deny.
 
 ---
-
-### Option B: Scaled Benchmark (100 Cases)
-
-Evaluate macro-F1, per-tier precision/recall, and latency across 100 Synthea FHIR patient cases:
-
-```bash
-# Smoke test (2 cases)
-python -m benchmark.run_scaled --limit 2
-
-# Full benchmark run (100 cases)
-python -m benchmark.run_scaled
-
-# Resume interrupted run
-python -m benchmark.run_scaled --resume
-```
-
-Benchmark output files will land in `benchmark/results/`:
-- `benchmark_results.csv`: Row-by-row audit logs.
-- `benchmark_summary.json`: Macro-F1, confusion matrix, precision/recall, and latency metrics.
-
----
-
-## Project Structure
-
-```
-local-prior-auth-audit/
-├── app.py                     # Streamlit web dashboard entrypoint
-├── requirements.txt           # Dependency requirements (streamlit, requests, python-docx)
-├── paper_submission.docx      # Submitted research report on Local AI Deployment
-├── generate_paper.py          # Script used to generate the DOCX research paper
-├── src/                       # Application core package
-│   ├── audit_engine.py        # Ollama API client, system prompt, CoT & JSON parser
-│   ├── cases.py               # Demo case loader
-│   ├── evaluator.py           # Single-case audit evaluator & metric builder
-│   ├── fhir_parser.py         # Synthea FHIR R4 parser & markdown formatter
-│   ├── ground_truth_cases.json# Gold-standard case labels
-│   ├── policies.py            # Clinical coverage policies (CP-101, CP-202, CP-303)
-│   └── synthea_data/          # Demo FHIR bundles
-└── benchmark/                 # Scaled benchmark evaluation harness
-    ├── ground_truth.json      # 100-case expert ground-truth dataset
-    ├── config.py              # Path configurations
-    ├── metrics.py             # Macro-F1 & precision/recall metric computer
-    ├── run_scaled.py          # CLI runner for 100-case evaluation
-    ├── synthea_data/          # FHIR patient bundles for benchmark
-    └── results/               # Generated benchmark outputs (gitignored)
-```
