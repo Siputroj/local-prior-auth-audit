@@ -308,6 +308,63 @@ html, body, [class*="css"] {
 /* Hide Streamlit Default Components */
 #MainMenu {visibility: hidden;}
 footer {visibility: hidden;}
+
+/* Demo Case Overview Banner */
+.demo-overview-card {
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    color: #F8FAFC;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.demo-overview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.demo-overview-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #F8FAFC;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.demo-overview-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+.badge-outcome-approve {
+    background-color: #065F46;
+    color: #34D399;
+    border: 1px solid #059669;
+}
+.badge-outcome-review {
+    background-color: #78350F;
+    color: #FBBF24;
+    border: 1px solid #D97706;
+}
+.badge-outcome-deny {
+    background-color: #7F1D1D;
+    color: #F87171;
+    border: 1px solid #B91C1C;
+}
+.demo-overview-body {
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #CBD5E1;
+}
+.demo-overview-label {
+    font-weight: 600;
+    color: #F8FAFC;
+}
 </style>
 """
 
@@ -337,7 +394,6 @@ def render_header():
         """
         <div class="main-header">
             <h1>Cotiviti Prior Authorization Audit AI</h1>
-            <p>Clinical Decision Support & Pattern Recognition Engine | Local Ollama & FHIR R4</p>
         </div>
         """,
         unsafe_allow_html=True,
@@ -407,31 +463,39 @@ def render_sidebar():
     case_id = case_options[selected_label]
     current_case = get_demo_case(case_id)
 
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("### System Architecture")
-    st.sidebar.markdown("**Front-End**: Streamlit")
-    st.sidebar.markdown(f"**LLM Engine**: Ollama (`{DEFAULT_MODEL}`)")
-    st.sidebar.markdown("**Data Format**: Synthea FHIR R4 JSON")
-    st.sidebar.markdown("**Standard**: SNOMED CT / RxNorm")
-    st.sidebar.markdown("**Hardware**: Apple Silicon (25GB RAM)")
-
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("### Model Status")
-    warm_res = st.session_state.get("warm_up_result")
-    if warm_res and warm_res.get("status") == "success":
-        st.sidebar.success(f"Model warm ({warm_res['latency_seconds']}s load)")
-    elif warm_res and warm_res.get("status") == "error":
-        st.sidebar.error(f"Warm-up failed: {warm_res.get('error_message')}")
-    else:
-        st.sidebar.info("Model not yet warmed.")
-
-    st.sidebar.markdown("---")
-
     return current_case
 
 
 def _dl_row(label, value):
     return f'<div class="dl-row"><div class="dl-label">{label}</div><div class="dl-value">{value}</div></div>'
+
+
+def render_demo_overview(case):
+    """Renders a high-level case objective and rationale banner for demo purposes."""
+    rec = case.get("expected_recommendation", "Approve")
+    tier = case.get("expected_risk_tier", "Low Risk")
+    rationale = case.get("rationale", "")
+
+    badge_class = "badge-outcome-approve"
+    if "deny" in rec.lower():
+        badge_class = "badge-outcome-deny"
+    elif "review" in rec.lower():
+        badge_class = "badge-outcome-review"
+
+    st.markdown(
+        f"""
+        <div class="demo-overview-card">
+            <div class="demo-overview-header">
+                <span class="demo-overview-title">📋 Demonstration Guide & Expected Outcome</span>
+                <span class="demo-overview-badge {badge_class}">{tier} / {rec}</span>
+            </div>
+            <div class="demo-overview-body">
+                <span class="demo-overview-label">Clinical Rationale:</span> {rationale}
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 def render_input_cards(case, summary_dict, summary_md, policy):
@@ -721,6 +785,7 @@ def main():
     summary_md = format_clinical_summary_markdown(summary_dict)
     policy = get_policy(case["policy_id"])
 
+    render_demo_overview(case)
     render_input_cards(case, summary_dict, summary_md, policy)
     render_audit_section(case, summary_dict, summary_md, policy)
     render_hitl_section(case)
