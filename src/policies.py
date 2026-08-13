@@ -172,10 +172,17 @@ POLICIES = {
         ),
         "guidelines": (
             "- C1: Active epilepsy or seizure disorder diagnosis.\n"
-            "- C2: First-line generic AEDs are ONLY: Carbamazepine (Tegretol), Levetiracetam (Keppra), Lamotrigine (Lamictal), Valproic Acid (Depakene), Phenytoin (Dilantin), Topiramate (Topamax). Active OR stopped records count as valid trials.\n"
-            "  * Count = 0 valid AEDs (e.g. only non-AEDs like Donepezil, Memantine, Simvastatin) -> 'High Risk' (Deny).\n"
-            "  * Count = 1 valid AED (e.g. Carbamazepine/Tegretol) -> 'Moderate Risk' (Manual Review Required).\n"
-            "  * Count >= 2 valid AEDs -> 'Low Risk' (Approve)."
+            "- C2: First-line generic AEDs are ONLY these six medications:\n"
+            "  1. Carbamazepine (Tegretol)\n"
+            "  2. Levetiracetam (Keppra)\n"
+            "  3. Lamotrigine (Lamictal)\n"
+            "  4. Valproic Acid (Depakene)\n"
+            "  5. Phenytoin (Dilantin)\n"
+            "  6. Topiramate (Topamax)\n"
+            "  * Any medication not explicitly in the list of six above is NOT a first-line generic AED trial. For example, Simvastatin, Donepezil, Memantine, Clopidogrel, Acetaminophen, and Ferrous Sulfate are NOT antiepileptic drugs.\n"
+            "  * If a patient has zero trials of the six AEDs listed above, you MUST classify as 'High Risk' (Deny).\n"
+            "  * If a patient has a trial of exactly one of the six AEDs listed above, you MUST classify as 'Moderate Risk' (Manual Review Required).\n"
+            "  * If a patient has trials of two or more of the six AEDs listed above, you MUST classify as 'Low Risk' (Approve)."
         )
     },
 
