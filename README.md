@@ -119,3 +119,7 @@ Once running, open `http://localhost:8501` in your browser.
 - **CASE-DEMO-003 (High Risk)**: Patient has active Epilepsy and Seizure disorder, but has exactly 0 valid first-line AEDs in their medication history (all meds are non-AED: Donepezil, Memantine, Simvastatin). Per CP-202 Section 3.4, zero prior AED trials is a HIGH RISK of policy non-compliance → Deny.
 
 ---
+
+## Sources & Datasets
+
+- **Synthea Patient Generator**: The synthetic patient FHIR R4 medical records used in this application and benchmark harness were generated using [Synthea](https://synthea.mitre.org). You can download and learn more about the generator from the [Synthea Downloads Page](https://synthea.mitre.org/downloads).
