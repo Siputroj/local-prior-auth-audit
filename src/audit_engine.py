@@ -33,7 +33,7 @@ _load_env()
 OLLAMA_API_URL = os.getenv("OLLAMA_API_URL", "http://localhost:11434/api/generate")
 DEFAULT_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:7b")
 
-
+# no longer used -- now used code instead of using LLM ot extract information
 EXTRACTION_SYSTEM_PROMPT = """You are a clinical fact extraction assistant.
 Your task is to parse a Patient Medical Record (FHIR Summary) and extract key clinical details required for prior authorization auditing.
 Extract and output ONLY a valid JSON object matching the exact schema below. Do not include any explanation.
