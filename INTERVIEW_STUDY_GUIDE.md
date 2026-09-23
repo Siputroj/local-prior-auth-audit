@@ -118,7 +118,7 @@ An explainable, privacy-preserving, local AI prior authorization (PA) auditing s
 - The LLM is required to output two citation arrays:
   - `policy_verbatim_citations`: Exact substrings from the coverage policy.
   - `patient_record_verbatim_citations`: Exact substrings from the patient FHIR summary.
-- The system verifies these quotes using an automated substring and n-gram search (`_sub_quote_match` in `src/evaluator.py`), producing an objective **Grounding Fidelity** score (0.0 to 1.0).
+- The system verifies these quotes using an automated substring and n-gram search (`_sub_quote_match` in `benchmark/evaluator.py`), producing an objective **Grounding Fidelity** score (0.0 to 1.0).
 
 ### 5. Defensive Structured Output & Normalization Layer
 - Small local models (7B) occasionally wrap JSON in markdown blocks (` ```json ... ``` `), use synonymous keys (`reasoning` vs. `chain_of_thought`), or output nested structures.
@@ -181,15 +181,6 @@ An explainable, privacy-preserving, local AI prior authorization (PA) auditing s
   - `warm_up_model(model)`: Sends a 1-token dummy prompt to preload weights into RAM/VRAM.
   - `_clean_and_parse_json(text)` & `_normalize_parsed_json(data)`: Robust JSON cleaning and key normalization.
 
-#### 5. `src/evaluator.py`
-- **Purpose**: Single-case quantitative evaluation comparing model output to gold-standard labels.
-- **Key Functions**:
-  - `evaluate_audit_result(case_id, audit_result, patient_summary_md, policy_text)`: Computes exact match for risk tier, citation precision, recall, F1, and verbatim grounding fidelity.
-  - `_sub_quote_match(quote, source_text)`: Substring and n-gram verification engine that tests whether a model's cited quote actually exists in the source text.
-
-#### 6. `src/ground_truth_cases.json`
-- Gold-standard annotated ground-truth labels for the 3 UI demo cases, detailing expected risk tier, satisfied criteria IDs, and expected citation quotes.
-
 ---
 
 ### `benchmark/` Directory (Scaled 100-Case Evaluation)
@@ -201,7 +192,13 @@ An explainable, privacy-preserving, local AI prior authorization (PA) auditing s
 - Zero-dependency statistical calculation engine (no heavy `scikit-learn` dependency).
 - Computes: Multi-class Macro-F1 across the 3 risk tiers, per-tier Precision/Recall/F1, Confusion Matrix, Overall Accuracy, Mean Grounding Fidelity, and Latency percentiles (`p50`, `p95`, `mean`).
 
-#### 3. `benchmark/run_scaled.py`
+#### 3. `benchmark/evaluator.py`
+- Automated quote verification and grounding evaluation engine.
+- Key Functions:
+  - `_sub_quote_match(quote, source_text)`: Substring and n-gram verification engine that tests whether a model's cited quote actually exists in the source text.
+  - `evaluate_audit_result()`: Computes tier matching, citation precision, recall, and grounding fidelity against ground-truth benchmarks.
+
+#### 4. `benchmark/run_scaled.py`
 - Resumable automated test harness.
 - Runs 100 Synthea cases through `audit_engine.py`.
 - Computes grounding fidelity and correctness against deterministic ground truth.
@@ -299,7 +296,7 @@ Confusion matrix (rows=expected, cols=predicted):
 > *"We tackle hallucinations at three layers:
 > 1. **Prompt Engineering & CoT**: We force the model into a 4-step Chain-of-Thought decomposition (Diagnosis -> Procedures -> Medications -> Contraindications), forcing it to evaluate evidence before reaching a tier.
 > 2. **Verbatim Grounding Requirement**: The model must provide verbatim quote citations from both the coverage policy and the patient record.
-> 3. **Automated Verbatim Verification**: In `src/evaluator.py`, we implement a quote matching algorithm (`_sub_quote_match`) that checks whether cited quotes actually exist in the source document. We score this as Grounding Fidelity, which averaged 64.5% across 100 test cases."*
+> 3. **Automated Verbatim Verification**: In `benchmark/evaluator.py`, we implement a quote matching algorithm (`_sub_quote_match`) that checks whether cited quotes actually exist in the source document. We score this as Grounding Fidelity, which averaged 64.5% across 100 test cases."*
 
 ### Q4: "What does your benchmark tell us about the limitations of smaller local models (7B)?"
 > **Strong Answer**:

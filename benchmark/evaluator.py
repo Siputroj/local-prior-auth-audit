@@ -18,14 +18,17 @@ import json
 import os
 
 
-GROUND_TRUTH_PATH = os.path.join(os.path.dirname(__file__), "ground_truth_cases.json")
+GROUND_TRUTH_PATH = os.path.join(os.path.dirname(__file__), "ground_truth.json")
 
 
 def load_ground_truth_benchmarks():
     """Load gold-standard benchmark data."""
     if os.path.exists(GROUND_TRUTH_PATH):
         with open(GROUND_TRUTH_PATH, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+            if isinstance(data, list):
+                return {c["id"]: c for c in data if "id" in c}
+            return data
     return {}
 
 
